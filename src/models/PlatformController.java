@@ -23,11 +23,24 @@ public class PlatformController {
 	 * 
 	 * @param User
 	 */
-	public String addUser(User User) {
+	public String addUser(User user) {
+		String id = "";
 		String msj = "No se agrego el usuario";
-		if(users.add(User)){
-			msj = "Sea agrego el usuario";
+		if(user instanceof Artist || user instanceof ContentCreator){
+			id = ((ProducerUser)(user)).getName();
 		}
+		if(user instanceof Premium || user instanceof Standard){
+			id = ((ConsumerUser)(user)).getId();
+		}
+		User anyUser = searchUser(id);
+		if(anyUser == null){
+			if(users.add(user)){
+				msj = "Sea agrego el usuario";
+			}
+		}else{
+			msj = "Ya existe un usuario con ese identificador";
+		}
+		
 		return msj;
 	}
 
@@ -68,16 +81,24 @@ public class PlatformController {
 	 */
 	public User searchUser(String id){
 		User anyUser = null;
+		String userName;
+		String userId;
 			for (int i = 0; i < users.size(); i++) {
-				if(users.get(i) instanceof ProducerUser){
+				if(users.get(i) instanceof Artist || users.get(i) instanceof ContentCreator){
+				userName = ((ProducerUser)(users.get(i))).getName();
+					if(userName.equals(id)){
+						anyUser = users.get(i);
+					}
 
 				}
-				if(users.get(i) instanceof ConsumerUser){
-					
+				if(users.get(i) instanceof Premium || users.get(i) instanceof Standard){
+						userId = ((ConsumerUser)(users.get(i))).getId();
+						if(userId.equals(id)){
+							anyUser = users.get(i);
+						}
 				}
-			
-
 			}
+			
 		return anyUser;
 	}
 

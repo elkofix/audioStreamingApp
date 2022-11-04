@@ -94,6 +94,7 @@ public class Main {
 			System.out.println("Quieres registrar como (1) Usuario premium o (2) Usuario Standard");
 			user = sc.nextLine().trim();
 			if(user.equals("1") || user.equals("2")){
+
 				System.out.println("Inserte el numero de documento del usuario");
 				id = sc.nextLine().trim();
 				if(id.isEmpty()){
