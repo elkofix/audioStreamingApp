@@ -24,14 +24,8 @@ public class PlatformController {
 	 * @param User
 	 */
 	public String addUser(User user) {
-		String id = "";
+		String id = giveUserId(user);
 		String msj = "No se agrego el usuario";
-		if(user instanceof Artist || user instanceof ContentCreator){
-			id = ((ProducerUser)(user)).getName();
-		}
-		if(user instanceof Premium || user instanceof Standard){
-			id = ((ConsumerUser)(user)).getId();
-		}
 		User anyUser = searchUser(id);
 		if(anyUser == null){
 			if(users.add(user)){
@@ -45,7 +39,6 @@ public class PlatformController {
 	}
 
 	public User createUser(String id, String nickname, String name, String imgURL, int typeUser1, int typeUser2){
-		
 		User anyUser = null;
 		if(typeUser1 == 1){
 			if(typeUser2 == 1){
@@ -63,16 +56,37 @@ public class PlatformController {
 			}
 		}
 		return anyUser;
+	}
 
+	public Audio createAudio(String name, String imgURL, int duration, String album, double price, String description, int genre,int audioType){
+		Audio anyAudio = null;
+		if(audioType==1){
+			anyAudio = new Song(name, imgURL, duration, album, price, giveSongGenre(genre));
+		}else{
+			anyAudio = new PodCast(name, imgURL, duration, description, givePodcastCategory(genre));
+		}
+		return anyAudio;
 	}
 
 	/**
 	 * 
 	 * @param Audio
 	 */
-	public String addAudio(int Audio) {
-		// TODO - implement PlatformController.addAudio
-		throw new UnsupportedOperationException();
+	public String addAudio(Audio audio, String userId) {
+		String msj = "No se agrego el audio";
+		User anyUser = searchUser(userId);
+		if(anyUser!=null){
+			if(anyUser instanceof Artist && audio instanceof Song){
+				((Artist)(anyUser)).addSong(((Song)(audio)));
+				msj = "Se agrego la cancion";
+			}else if(anyUser instanceof ContentCreator && audio instanceof PodCast){
+				((ContentCreator)(anyUser)).addPodcast(((PodCast)(audio)));
+				msj = "Se agrego el podcast";
+			}else{
+				msj = "Este usuario no puede agregar este audio";
+			}
+		}
+		return msj;
 	}
 
 	/**
@@ -86,14 +100,14 @@ public class PlatformController {
 			for (int i = 0; i < users.size(); i++) {
 				if(users.get(i) instanceof Artist || users.get(i) instanceof ContentCreator){
 				userName = ((ProducerUser)(users.get(i))).getName();
-					if(userName.equals(id)){
+					if(id.equals(userName)){
 						anyUser = users.get(i);
 					}
 
 				}
 				if(users.get(i) instanceof Premium || users.get(i) instanceof Standard){
 						userId = ((ConsumerUser)(users.get(i))).getId();
-						if(userId.equals(id)){
+						if(id.equals(userId)){
 							anyUser = users.get(i);
 						}
 				}
@@ -213,6 +227,66 @@ public class PlatformController {
 	public String getBestSeller() {
 		// TODO - implement PlatformController.getBestSeller
 		throw new UnsupportedOperationException();
+	}
+
+	public String giveUserId(User user){
+		String id = null;
+		if(user != null){
+			if(user instanceof Artist || user instanceof ContentCreator){
+				id = ((ProducerUser)(user)).getName();
+			}
+			if(user instanceof Premium || user instanceof Standard){
+				id = ((ConsumerUser)(user)).getId();
+			}
+		}
+		
+		return id;
+	}
+	public Genre giveSongGenre(int option){
+		Genre givenGenre = null;
+		switch(option){
+			case 1:
+				givenGenre = Genre.ROCK;
+			break;
+			case 2:
+				givenGenre = Genre.POP;
+			break;
+			case 3:
+				givenGenre = Genre.TRAP;
+			break;
+			case 4:
+				givenGenre = Genre.HOUSE;
+			break;
+			default:
+
+			break;
+			
+		}
+		return givenGenre;
+	}
+
+	public Category givePodcastCategory(int option){
+		Category givenCategory = null;
+		switch(option){
+			case 1:
+				givenCategory = Category.POLITICS;
+			break;
+			case 2:
+				givenCategory = Category.ENTERTAINMENT;
+			break;
+			case 3:
+				givenCategory = Category.VIDEOGAMES;
+			break;
+			case 4:
+				givenCategory = Category.TREND;
+			break;
+			default:
+
+			break;
+			
+		}
+		return givenCategory;
+	
 	}
 
 }

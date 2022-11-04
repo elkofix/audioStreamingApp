@@ -1,5 +1,6 @@
 package ui;
 import models.PlatformController;
+import models.ConsumerUser;
 import java.util.Scanner;
 
 public class Main {
@@ -21,7 +22,7 @@ public class Main {
 		}while (option!=0);	
 	}
 
-	
+
 	public int getOptionShowMenu(){
 		int option = 0; 
 		System.out.println("<<<<< Welcome to Store >>>>>");
@@ -43,7 +44,7 @@ public class Main {
 				break; 
 
 			case 2: 
-		
+				registerAudio();
 				break; 
 
 			case 3: 
@@ -118,14 +119,14 @@ public class Main {
 			user = sc.nextLine().trim();
 			if(user.equals("1") || user.equals("2")){
 				System.out.println("Inserte el nombre del usuario");
-				id = sc.nextLine();	
-				if(id.isEmpty()){
+				name = sc.nextLine().trim();	
+				if(name.isEmpty()){
 					System.out.println("El nombre no puede estar vacio");
 				}else{
 					System.out.println("La URL de la imagen que lo representa");
-					nickname = sc.nextLine().trim();
-					if(nickname.isEmpty()){
-						System.out.println("la URl no puede estar vacia");
+					imgURL = sc.nextLine().trim();
+					if(imgURL.isEmpty()){
+						System.out.println("la URL no puede estar vacia");
 					}else{
 						String msj =control.addUser(control.createUser(id, nickname, name, imgURL, Integer.parseInt(which), Integer.parseInt(user)));
 						System.out.println(msj);
@@ -138,13 +139,69 @@ public class Main {
 	}
 
 	public void registerAudio() {
-		// TODO - implement Main.registerAudio
-		throw new UnsupportedOperationException();
+		String msj  = null;
+		String name = null;
+		String imgURL = null;
+		int duration = 0;
+		String album = null;
+		Double price = 0.0;
+		int genre = 0;
+		String description = null;
+		System.out.println("Inserte el nombre del productor al cual agregar el audio");
+		String creatorName = sc.nextLine().trim();
+		System.out.println("¿Que tipo de audio deseas registrar? \n"+
+		"1. Cancion \n"+
+		"2. PodCast");
+		String audioType = sc.nextLine().trim();
+		if(audioType.equals("1") || audioType.equals("2")){	
+			System.out.println("Inserte el nombre del audio");
+			name = sc.nextLine().trim();
+			System.out.println("Inserte el el URL de la imagen");
+			imgURL = sc.nextLine().trim();
+			System.out.println("Inserte la duracion del audio en segundos");
+			duration = sc.nextInt();
+			sc.nextLine();
+			
+			if(audioType.equals("1")){
+				System.out.println("Inserte el nombre del album");
+				album = sc.nextLine();
+				System.out.println("Inserte el precio de venta de la cancion");
+				price = sc.nextDouble();
+				System.out.println("Escoja el genero de la cancion \n"+
+				"1. Rock \n"+
+				"2. Pop \n"+
+				"3. Trap \n"+
+				"4. Houes");
+				genre = sc.nextInt();
+			}else if(audioType.equals("2")){
+				System.out.println("Escoja la categoria de la cancion \n"+
+				"1. Politica\n"+
+				"2. Entretenimiento \n"+
+				"3. Videojuegos \n"+
+				"4. Moda");
+				genre = sc.nextInt();
+				sc.nextLine();
+				System.out.println("Inserte la descripcion del podcast");
+				description = sc.nextLine();
+			}
+			msj = control.addAudio(control.createAudio(name, imgURL, duration, album, price, description, genre, Integer.parseInt(audioType)), creatorName);
+			System.out.println(msj);
+		}else{
+			System.out.println("Opcion invalida");
+		}
 	}
 
 	public void registerPlaylist() {
-		// TODO - implement Main.registerPlaylist
-		throw new UnsupportedOperationException();
+		String id = null;
+		System.out.println("Inserte el identificador del usuario");
+		id = sc.nextLine();
+			
+		if(control.searchUser(id) !=null){
+			if(control.searchUser(id) instanceof ConsumerUser){
+				ConsumerUser anyUser = (ConsumerUser)(control.searchUser(id));
+			}
+		}
+		
 	}
 
 	public void editPlaylist() {

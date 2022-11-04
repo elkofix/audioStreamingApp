@@ -13,5 +13,9 @@ public class Artist extends ProducerUser {
 		super(name, imgURL);
 		songs = new ArrayList<Song>();
 	}
+	
+	public boolean addSong(Song newSong){
+		return songs.add(newSong);
+	}
 
 }

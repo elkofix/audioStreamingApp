@@ -65,6 +65,4 @@ public class Song extends Audio {
 		this.timesSold = timesSold;
 	}
 
-
-
 }

@@ -14,4 +14,8 @@ public class ContentCreator extends ProducerUser {
 		podcasts = new ArrayList<PodCast>();
 	}
 
+	public boolean addPodcast(PodCast newPodCast){
+		return podcasts.add(newPodCast);
+	}
+
 }
