@@ -1,0 +1,6 @@
+public enum Category {
+	POLITICS,
+	ENTERTAINMENT,
+	VIDEOGAMES,
+	TREND
+}
