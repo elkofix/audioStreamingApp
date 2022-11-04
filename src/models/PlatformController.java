@@ -1,3 +1,4 @@
+package models;
 public class PlatformController {
 
 	private String name;
@@ -8,9 +9,9 @@ public class PlatformController {
 	 * @param name
 	 * @param nit
 	 */
-	public PlatformController(int name, int nit) {
-		// TODO - implement PlatformController.PlatformController
-		throw new UnsupportedOperationException();
+	public PlatformController(String name, String nit) {
+		this.name = name;
+		this.nit = nit;
 	}
 
 	/**

@@ -1,3 +1,4 @@
+package models;
 public class ProducerUser extends User {
 
 	private String name;

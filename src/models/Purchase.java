@@ -1,3 +1,6 @@
+package models;
+
+import java.util.Date;
 public class Purchase {
 
 	private Date purchaseDate;

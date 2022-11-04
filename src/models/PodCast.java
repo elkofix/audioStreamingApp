@@ -1,3 +1,4 @@
+package models;
 public class PodCast extends Audio {
 
 	private String description;
@@ -10,6 +11,7 @@ public class PodCast extends Audio {
 	 * @param description
 	 */
 	public PodCast(int name, int imgURL, int duration, int description) {
+		super(name, imgURL, duration);
 		// TODO - implement PodCast.PodCast
 		throw new UnsupportedOperationException();
 	}

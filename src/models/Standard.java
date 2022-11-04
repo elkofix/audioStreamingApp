@@ -1,3 +1,4 @@
+package models;
 public class Standard extends ConsumerUser {
 
 	/**
@@ -6,6 +7,7 @@ public class Standard extends ConsumerUser {
 	 * @param nickname
 	 */
 	public Standard(int id, int nickname) {
+		super(id, nickname);
 		// TODO - implement Standard.Standard
 		throw new UnsupportedOperationException();
 	}

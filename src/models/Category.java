@@ -1,3 +1,4 @@
+package models;
 public enum Category {
 	POLITICS,
 	ENTERTAINMENT,

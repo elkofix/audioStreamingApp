@@ -1,3 +1,7 @@
+package models;
+import java.util.Date;
+
+
 public abstract class User {
 
 	private Date linkDate;

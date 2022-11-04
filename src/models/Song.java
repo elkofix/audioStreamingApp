@@ -1,3 +1,4 @@
+package models;
 public class Song extends Audio {
 
 	private String album;
@@ -13,6 +14,7 @@ public class Song extends Audio {
 	 * @param price
 	 */
 	public Song(int name, int imgURL, int duration, int album, int price) {
+		super(name, imgURL, duration);
 		// TODO - implement Song.Song
 		throw new UnsupportedOperationException();
 	}
