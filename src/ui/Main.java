@@ -1,10 +1,85 @@
 package ui;
+import models.PlatformController;
+import java.util.Scanner;
 
 public class Main {
+	
+	Scanner sc;
+	PlatformController control;
 
 	public Main() {
-		// TODO - implement Main.Main
-		throw new UnsupportedOperationException();
+		sc = new Scanner(System.in);
+		control = new PlatformController("NeoSound", "78964646536");
+	}
+	public static void main(String[] args) {
+		Main main = new Main();
+		int option = 0;
+		do{
+			option = main.getOptionShowMenu();
+			main.executeOption(option);
+
+		}while (option!=0);	
+	}
+
+	
+	public int getOptionShowMenu(){
+		int option = 0; 
+		System.out.println("<<<<< Welcome to Store >>>>>");
+		System.out.println(
+				"1. Registrar usuario\n" +
+				"2. Registrar audio \n" +
+				"3. Crear lista de reproduccion \n" +
+				"4. Editar lista de reproduccion\n" +
+				"0. Exit. ");
+		option =  validateIntegerInput();
+		return option; 
+	}
+
+	public void executeOption(int option){
+		String which = "";
+
+		switch(option){
+			case 1: 
+				
+				
+				break; 
+
+			case 2: 
+		
+				break; 
+
+			case 3: 
+		
+				
+				break; 
+			case 4:
+
+				break;
+
+			case 0: 
+				System.out.println("Exit program.");
+				break; 
+
+			default: 
+				System.out.println("Invalid Option");
+				break; 
+		}
+	}
+
+	public int validateIntegerInput(){
+		int option = 0; 
+
+		if(sc.hasNextInt()){
+			option = sc.nextInt(); 
+			sc.nextLine();
+		}
+		else{
+			// clear sc. 
+			sc.nextLine(); 
+			option = -1; 
+		}
+
+		return option; 
 	}
 
 	public void registerUser() {
@@ -41,5 +116,6 @@ public class Main {
 		// TODO - implement Main.buySong
 		throw new UnsupportedOperationException();
 	}
+
 
 }
