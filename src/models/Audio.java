@@ -13,9 +13,10 @@ public class Audio {
 	 * @param imgURL
 	 * @param duration
 	 */
-	public Audio(int name, int imgURL, int duration) {
-		// TODO - implement Audio.Audio
-		throw new UnsupportedOperationException();
+	public Audio(String name, String imgURL, int duration) {
+		this.name = name;
+		this.imgURL = imgURL;
+		this.duration = duration;
 	}
 
 	public String getName() {

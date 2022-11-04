@@ -7,8 +7,7 @@ public abstract class User {
 	private Date linkDate;
 
 	public User() {
-		// TODO - implement User.User
-		throw new UnsupportedOperationException();
+		this.linkDate = new Date();
 	}
 
 	public String getId() {

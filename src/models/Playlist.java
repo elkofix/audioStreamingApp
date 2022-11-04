@@ -1,19 +1,24 @@
 package models;
+
+import java.util.ArrayList;
+
 public class Playlist {
 
 	private String name;
 	private String id;
+	private ArrayList<Audio> audios;
 
 	/**
 	 * 
 	 * @param name
 	 */
-	public Playlist(int name) {
-		// TODO - implement Playlist.Playlist
-		throw new UnsupportedOperationException();
+	public Playlist(String name) {
+		this.name = name;
+		audios = new ArrayList<Audio>();
+		id = generateCode();
 	}
 
-	public boolean generateCode() {
+	public String generateCode() {
 		// TODO - implement Playlist.generateCode
 		throw new UnsupportedOperationException();
 	}

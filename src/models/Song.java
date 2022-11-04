@@ -13,10 +13,10 @@ public class Song extends Audio {
 	 * @param album
 	 * @param price
 	 */
-	public Song(int name, int imgURL, int duration, int album, int price) {
+	public Song(String name, String imgURL, int duration, String album, Double price) {
 		super(name, imgURL, duration);
-		// TODO - implement Song.Song
-		throw new UnsupportedOperationException();
+		this.album = album;
+		this.price = price;
 	}
 
 	public String getAlbum() {

@@ -11,9 +11,11 @@ public abstract class ConsumerUser extends User {
 	 * @param id
 	 * @param nickname
 	 */
-	public ConsumerUser(int id, int nickname) {
-		// TODO - implement ConsumerUser.ConsumerUser
-		throw new UnsupportedOperationException();
+	public ConsumerUser(String id, String nickname) {
+		super();
+		this.id = id;
+		this.nickname = nickname;
+		playedTime = 0;
 	}
 
 	public Date datePurchase() {

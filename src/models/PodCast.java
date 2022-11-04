@@ -10,10 +10,9 @@ public class PodCast extends Audio {
 	 * @param duration
 	 * @param description
 	 */
-	public PodCast(int name, int imgURL, int duration, int description) {
+	public PodCast(String name, String imgURL, int duration, String description) {
 		super(name, imgURL, duration);
-		// TODO - implement PodCast.PodCast
-		throw new UnsupportedOperationException();
+		this.description = description;
 	}
 
 	public String getDescription() {

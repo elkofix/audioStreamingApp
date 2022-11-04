@@ -12,8 +12,8 @@ public class ProducerUser extends User {
 	 * @param imgURL
 	 */
 	public ProducerUser(int name, int imgURL) {
-		// TODO - implement ProducerUser.ProducerUser
-		throw new UnsupportedOperationException();
+		super();
+
 	}
 
 	/**

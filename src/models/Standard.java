@@ -1,15 +1,19 @@
 package models;
+
+import java.util.ArrayList;
+
 public class Standard extends ConsumerUser {
 
+	public static final int MAX_SONGS = 100;
+	private ArrayList<Purchase> purchases;
 	/**
 	 * 
 	 * @param id
 	 * @param nickname
 	 */
-	public Standard(int id, int nickname) {
+	public Standard(String id, String nickname) {
 		super(id, nickname);
-		// TODO - implement Standard.Standard
-		throw new UnsupportedOperationException();
+		purchases = new ArrayList<Purchase>(MAX_SONGS);
 	}
 
 	public String calculateMostCreator() {
@@ -27,6 +31,14 @@ public class Standard extends ConsumerUser {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * 
+	 * @param songName
+	 */
+	public Song searchSong(int songName) {
+		// TODO - implement Purchase.searchSong
+		throw new UnsupportedOperationException();
+	}
 	/**
 	 * 
 	 * @param Song

@@ -1,4 +1,7 @@
 package models;
+
+import java.util.ArrayList;
+
 public class Premium extends ConsumerUser {
 
 	/**
@@ -6,10 +9,11 @@ public class Premium extends ConsumerUser {
 	 * @param id
 	 * @param nickname
 	 */
-	public Premium(int id, int nickname) {
+
+	 private ArrayList<Purchase> purchases;
+	public Premium(String id, String nickname) {
 		super(id, nickname);
-		// TODO - implement Premium.Premium
-		throw new UnsupportedOperationException();
+		purchases = new ArrayList<Purchase>();
 	}
 
 	public String calculateMostCreator() {
@@ -24,6 +28,14 @@ public class Premium extends ConsumerUser {
 
 	public String calculateMostGenre() {
 		// TODO - implement Premium.calculateMostGenre
+		throw new UnsupportedOperationException();
+	}
+	/**
+	 * 
+	 * @param songName
+	 */
+	public Song searchSong(int songName) {
+		// TODO - implement Purchase.searchSong
 		throw new UnsupportedOperationException();
 	}
 

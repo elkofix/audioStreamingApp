@@ -8,8 +8,6 @@ public class Artist extends ProducerUser {
 	 */
 	public Artist(int name, int imgURL) {
 		super(name, imgURL);
-		// TODO - implement Artist.Artist
-		throw new UnsupportedOperationException();
 	}
 
 }
