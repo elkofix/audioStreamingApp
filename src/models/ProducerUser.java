@@ -11,9 +11,12 @@ public class ProducerUser extends User {
 	 * @param name
 	 * @param imgURL
 	 */
-	public ProducerUser(int name, int imgURL) {
+	public ProducerUser(String name, String imgURL) {
 		super();
-
+		this.name = name;
+		this.imgURL = imgURL;
+		plays = 0;
+		playTime = 0;
 	}
 
 	/**

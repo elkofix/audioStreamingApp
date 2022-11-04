@@ -2,6 +2,7 @@ package models;
 public class PodCast extends Audio {
 
 	private String description;
+	private Category category;
 
 	/**
 	 * 
@@ -10,9 +11,10 @@ public class PodCast extends Audio {
 	 * @param duration
 	 * @param description
 	 */
-	public PodCast(String name, String imgURL, int duration, String description) {
+	public PodCast(String name, String imgURL, int duration, String description, Category category) {
 		super(name, imgURL, duration);
 		this.description = description;
+		this.category = category;
 	}
 
 	public String getDescription() {

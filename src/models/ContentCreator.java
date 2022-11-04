@@ -1,13 +1,17 @@
 package models;
-public class ContentCreator extends ProducerUser {
 
+import java.util.ArrayList;
+
+public class ContentCreator extends ProducerUser {
+	private ArrayList<PodCast> podcasts;
 	/**
 	 * 
 	 * @param name
 	 * @param imgURL
 	 */
-	public ContentCreator(int name, int imgURL) {
+	public ContentCreator(String name, String imgURL) {
 		super(name, imgURL);
+		podcasts = new ArrayList<PodCast>();
 	}
 
 }

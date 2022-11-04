@@ -4,6 +4,15 @@ public class Song extends Audio {
 	private String album;
 	private double price;
 	private int timesSold;
+	private Genre genre;
+
+	public Genre getGenre() {
+		return genre;
+	}
+
+	public void setGenre(Genre genre) {
+		this.genre = genre;
+	}
 
 	/**
 	 * 
@@ -13,10 +22,11 @@ public class Song extends Audio {
 	 * @param album
 	 * @param price
 	 */
-	public Song(String name, String imgURL, int duration, String album, Double price) {
+	public Song(String name, String imgURL, int duration, String album, Double price, Genre genre) {
 		super(name, imgURL, duration);
 		this.album = album;
 		this.price = price;
+		this.genre = genre;
 	}
 
 	public String getAlbum() {
@@ -55,18 +65,6 @@ public class Song extends Audio {
 		this.timesSold = timesSold;
 	}
 
-	public Genre getGenre() {
-		// TODO - implement Song.getGenre
-		throw new UnsupportedOperationException();
-	}
 
-	/**
-	 * 
-	 * @param Genre
-	 */
-	public void setGenre(int Genre) {
-		// TODO - implement Song.setGenre
-		throw new UnsupportedOperationException();
-	}
 
 }
