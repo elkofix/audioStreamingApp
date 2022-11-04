@@ -83,8 +83,19 @@ public class Main {
 	}
 
 	public void registerUser() {
-		// TODO - implement Main.registerUser
-		throw new UnsupportedOperationException();
+		System.out.println("¿Que tipo de usuario desea registrar?\n"+
+		"1. Consumidor"+
+		"2. Productor");
+		String user = null;
+		String which = sc.nextLine().trim();
+		if(which.equals("1")){
+			System.out.println("Quieres registrar como (1) Usuario premium o (2) Usuario Standard");
+			user = sc.nextLine();
+		}else if(which.equals("2")){
+
+		}else{
+			System.out.println("Opcion invalida");
+		}
 	}
 
 	public void registerAudio() {
