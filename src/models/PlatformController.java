@@ -1,8 +1,12 @@
 package models;
+
+import java.util.ArrayList;
+
 public class PlatformController {
 
 	private String name;
 	private String nit;
+	private ArrayList<User> users;
 
 	/**
 	 * 
@@ -12,15 +16,41 @@ public class PlatformController {
 	public PlatformController(String name, String nit) {
 		this.name = name;
 		this.nit = nit;
+		users = new ArrayList<User>();
 	}
 
 	/**
 	 * 
 	 * @param User
 	 */
-	public String addUser(int User) {
-		// TODO - implement PlatformController.addUser
-		throw new UnsupportedOperationException();
+	public String addUser(User User) {
+		String msj = "No se agrego el usuario";
+		if(users.add(User)){
+			msj = "Sea agrego el usuario";
+		}
+		return msj;
+	}
+
+	public User createUser(String id, String nickname, String name, String imgURL, int typeUser1, int typeUser2){
+		
+		User anyUser = null;
+		if(typeUser1 == 1){
+			if(typeUser2 == 1){
+				anyUser = new Standard(id, nickname);
+			}else{
+				anyUser = new Premium(id, nickname);
+			}
+		}
+
+		if(typeUser1 == 2){
+			if(typeUser2 == 1){
+				anyUser = new Artist(name, imgURL);
+			}else{
+				anyUser = new ContentCreator(name, imgURL);
+			}
+		}
+		return anyUser;
+
 	}
 
 	/**
@@ -36,18 +66,19 @@ public class PlatformController {
 	 * 
 	 * @param name
 	 */
-	public ProducerUser searchProducer(int name) {
-		// TODO - implement PlatformController.searchProducer
-		throw new UnsupportedOperationException();
-	}
+	public User searchUser(String id){
+		User anyUser = null;
+			for (int i = 0; i < users.size(); i++) {
+				if(users.get(i) instanceof ProducerUser){
 
-	/**
-	 * 
-	 * @param id
-	 */
-	public ConsumerUser searchConsumer(int id) {
-		// TODO - implement PlatformController.searchConsumer
-		throw new UnsupportedOperationException();
+				}
+				if(users.get(i) instanceof ConsumerUser){
+					
+				}
+			
+
+			}
+		return anyUser;
 	}
 
 	/**
