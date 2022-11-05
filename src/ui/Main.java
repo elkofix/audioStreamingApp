@@ -50,7 +50,7 @@ public class Main {
 				registerPlaylist();
 				break; 
 			case 4:
-
+				editPlaylist();
 				break;
 
 			case 0: 
@@ -224,13 +224,31 @@ public class Main {
 			System.out.println(control.deployUserOptions(id)[1]);
 		}
 		
-
-		
-		
 	}
 
 	public void editPlaylist() {
-		System.out.println("");
+		String id = null;
+		String which = null;
+		String playlistName = null;
+		String audioName = null;
+		System.out.println("Inserte el identificador de usuario");
+		id = sc.nextLine();
+		System.out.println("Inserte el nombre de la playlist");
+		playlistName = sc.nextLine();
+		System.out.println("¿Quieres agregar o eliminar un audio? \n"+
+		"1. Agregar \n"+
+		"2. Eliminar");
+		which = sc.nextLine();
+		System.out.println("Inserte el nombre del audio");
+		audioName = sc.nextLine();
+		if(which.equals("1") || which.equals("2")){
+			System.out.println(control.editPlaylist(playlistName, audioName, Integer.parseInt(which), id));
+		}else{
+			System.out.println("Opcion invalida");
+		}
+		
+		
+
 	}
 
 	public void sharePlaylist() {

@@ -252,6 +252,9 @@ public class PlatformController {
 								anyUserC.addPlaylist(anyPlaylist);
 								users.remove(anyUser);
 								users.add(anyUserC);
+								msj = "Se elimino el podcast";
+						}else{
+							msj = "Esta playlist no tiene este audio";
 						}
 					}
 				}else{
@@ -261,7 +264,7 @@ public class PlatformController {
 					if(searchSongFromUser((Song)newAudio, anyUserC)){
 						if(action == 1){
 							if(anyPlaylist.getAudios().contains(newAudio)){
-	
+								msj = "Esta playlist no tiene ese audio";
 							}else{
 								anyPlaylist.getAudios().add(newAudio);
 								anyUserC.getPlaylists().remove(anyPlaylist);
@@ -278,6 +281,7 @@ public class PlatformController {
 								anyUserC.addPlaylist(anyPlaylist);
 								users.remove(anyUser);
 								users.add(anyUserC);
+								msj = "Se elimino la cancion";
 							}
 						}	
 					}else{
