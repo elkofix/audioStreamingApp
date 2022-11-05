@@ -6,6 +6,10 @@ public class Purchase {
 	private Date purchaseDate;
 	private Song song;
 
+	public Song getSong() {
+		return song;
+	}
+
 	public Purchase(Song newSong) {
 		purchaseDate = new Date();
 		this.song = newSong;

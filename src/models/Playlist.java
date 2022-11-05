@@ -8,6 +8,14 @@ public class Playlist {
 	private String id;
 	private ArrayList<Audio> audios;
 
+	public ArrayList<Audio> getAudios() {
+		return audios;
+	}
+
+	public void setAudios(ArrayList<Audio> audios) {
+		this.audios = audios;
+	}
+
 	/**
 	 * 
 	 * @param name
@@ -15,7 +23,7 @@ public class Playlist {
 	public Playlist(String name) {
 		this.name = name;
 		audios = new ArrayList<Audio>();
-		id = generateCode();
+		//id = generateCode();
 	}
 
 	public String generateCode() {
@@ -25,11 +33,10 @@ public class Playlist {
 
 	/**
 	 * 
-	 * @param Audio
+	 * @param newAudio
 	 */
-	public boolean addAudio(int Audio) {
-		// TODO - implement Playlist.addAudio
-		throw new UnsupportedOperationException();
+	public boolean addAudio(Audio newAudio) {
+		return audios.add(newAudio);
 	}
 
 	public String getName() {
@@ -60,9 +67,16 @@ public class Playlist {
 	 * 
 	 * @param name
 	 */
-	public boolean searchAudio(int name) {
-		// TODO - implement Playlist.searchAudio
-		throw new UnsupportedOperationException();
+	public Audio searchAudio(String name) {
+		Audio anyAudio = null;
+		boolean isFound = false;
+		for (int i = 0; i < audios.size() && !isFound; i++) {
+			if(audios.get(i).getName().equals(name)){
+				anyAudio = audios.get(i);
+				isFound = true;
+			}
+		}
+		return anyAudio;
 	}
 
 }

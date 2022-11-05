@@ -1,5 +1,7 @@
 package models;
+import java.util.ArrayList;
 import java.util.Date;
+
 public abstract class ConsumerUser extends User {
 
 	private String id;
@@ -10,7 +12,14 @@ public abstract class ConsumerUser extends User {
 	public void setId(String id) {
 		this.id = id;
 	}
+	private ArrayList<Playlist> playlists;
+	public ArrayList<Playlist> getPlaylists() {
+		return playlists;
+	}
 
+	public void setPlaylists(ArrayList<Playlist> playlists) {
+		this.playlists = playlists;
+	}
 	private String nickname;
 	private int playedTime;
 
@@ -24,6 +33,7 @@ public abstract class ConsumerUser extends User {
 		this.id = id;
 		this.nickname = nickname;
 		playedTime = 0;
+		playlists = new ArrayList<Playlist>();
 	}
 
 	public Date datePurchase() {
@@ -47,6 +57,8 @@ public abstract class ConsumerUser extends User {
 	public abstract String calculateMostArtist();
 
 	public abstract String calculateMostCreator();
+
+	public abstract String deployPurchases();
 
 	public int getPlayedTime() {
 		return this.playedTime;
@@ -72,27 +84,19 @@ public abstract class ConsumerUser extends User {
 		this.nickname = nickname;
 	}
 
-	public Playlist getPlaylist() {
-		// TODO - implement ConsumerUser.getPlaylist
-		throw new UnsupportedOperationException();
+
+	/**
+	 * 
+	 * @param playlist
+	 */
+	public boolean addPlaylist(Playlist playlist) {
+		return playlists.add(playlist);
 	}
 
 	/**
 	 * 
 	 * @param Playlist
 	 */
-	public boolean addPlaylist(int Playlist) {
-		// TODO - implement ConsumerUser.addPlaylist
-		throw new UnsupportedOperationException();
-	}
 
-	/**
-	 * 
-	 * @param Playlist
-	 */
-	public void setPlaylist(int Playlist) {
-		// TODO - implement ConsumerUser.setPlaylist
-		throw new UnsupportedOperationException();
-	}
 
 }

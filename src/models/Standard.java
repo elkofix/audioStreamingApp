@@ -6,6 +6,14 @@ public class Standard extends ConsumerUser {
 
 	public static final int MAX_SONGS = 100;
 	private ArrayList<Purchase> purchases;
+	public ArrayList<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(ArrayList<Purchase> purchases) {
+		this.purchases = purchases;
+	}
+
 	/**
 	 * 
 	 * @param id
@@ -46,6 +54,19 @@ public class Standard extends ConsumerUser {
 	public boolean addSong(int Song) {
 		// TODO - implement Standard.addSong
 		throw new UnsupportedOperationException();
+	}
+
+	public String deployPurchases(){
+		String msj = "Tus canciones: \n";
+		int counter = 0;
+		for (int i = 0; i < purchases.size() ; i++) {
+			msj += "-"+purchases.get(i).getSong().getName()+"\n";
+			counter++;
+		}
+		if(counter == 0){
+			msj = "No has comprado canciones aun \n";
+		}
+		return msj;
 	}
 
 }

@@ -36,4 +36,6 @@ public abstract class User {
 		this.linkDate = linkDate;
 	}
 
+	
+
 }

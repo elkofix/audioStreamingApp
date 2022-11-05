@@ -1,6 +1,5 @@
 package ui;
 import models.PlatformController;
-import models.ConsumerUser;
 import java.util.Scanner;
 
 public class Main {
@@ -48,8 +47,7 @@ public class Main {
 				break; 
 
 			case 3: 
-		
-				
+				registerPlaylist();
 				break; 
 			case 4:
 
@@ -193,20 +191,46 @@ public class Main {
 
 	public void registerPlaylist() {
 		String id = null;
+		String which = null;
+		String playlistName = null;
+		String audioName = null;
+		System.out.println("Inserte un nombre para la playlist");
+		playlistName = sc.nextLine();
 		System.out.println("Inserte el identificador del usuario");
 		id = sc.nextLine();
-			
-		if(control.searchUser(id) !=null){
-			if(control.searchUser(id) instanceof ConsumerUser){
-				ConsumerUser anyUser = (ConsumerUser)(control.searchUser(id));
+		if(control.deployUserOptions(id)[1]==null){
+			System.out.println(control.deployUserOptions(id)[0]);
+			System.out.println("Inserte el nombre del audio que desea agregar");
+			audioName = sc.nextLine();
+			if(control.createPlaylist(playlistName, id, audioName)){
+				System.out.println("Se creo la playlist");
+				do{
+					System.out.println("¿Deseas agregar otro audio? \n"+
+					"1. Si \n"+
+					"2. No");
+					which = sc.nextLine().trim();
+					if(which.equals("1")){
+						System.out.println(control.deployUserOptions(id)[0]);
+						System.out.println("Inserte el nombre del audio que desea agregar");
+						audioName = sc.nextLine();
+						System.out.println(control.editPlaylist(playlistName, audioName, 1, id));
+					}
+				}while (which.equals("1"));
+				System.out.println("Playlist Concluida");
+			}else{
+				System.out.println("No se encontro el audio");
 			}
+		}else{
+			System.out.println(control.deployUserOptions(id)[1]);
 		}
+		
+
+		
 		
 	}
 
 	public void editPlaylist() {
-		// TODO - implement Main.editPlaylist
-		throw new UnsupportedOperationException();
+		System.out.println("");
 	}
 
 	public void sharePlaylist() {
