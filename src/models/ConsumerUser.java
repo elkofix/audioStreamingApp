@@ -5,21 +5,7 @@ import java.util.Date;
 public abstract class ConsumerUser extends User {
 
 	private String id;
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 	private ArrayList<Playlist> playlists;
-	public ArrayList<Playlist> getPlaylists() {
-		return playlists;
-	}
-
-	public void setPlaylists(ArrayList<Playlist> playlists) {
-		this.playlists = playlists;
-	}
 	private String nickname;
 	private int playedTime;
 
@@ -35,6 +21,7 @@ public abstract class ConsumerUser extends User {
 		playedTime = 0;
 		playlists = new ArrayList<Playlist>();
 	}
+
 
 	public Date datePurchase() {
 		// TODO - implement ConsumerUser.datePurchase
@@ -62,6 +49,21 @@ public abstract class ConsumerUser extends User {
 
 	public int getPlayedTime() {
 		return this.playedTime;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	public ArrayList<Playlist> getPlaylists() {
+		return playlists;
+	}
+
+	public void setPlaylists(ArrayList<Playlist> playlists) {
+		this.playlists = playlists;
 	}
 
 	/**

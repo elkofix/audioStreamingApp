@@ -30,6 +30,7 @@ public class Main {
 				"2. Registrar audio \n" +
 				"3. Crear lista de reproduccion \n" +
 				"4. Editar lista de reproduccion\n" +
+				"5. Compartir lista de reproduccion\n" +
 				"0. Exit. ");
 		option =  validateIntegerInput();
 		return option; 
@@ -52,7 +53,9 @@ public class Main {
 			case 4:
 				editPlaylist();
 				break;
-
+			case 5:
+				sharePlaylist();
+			break;
 			case 0: 
 				System.out.println("Exit program.");
 				break; 
@@ -154,36 +157,40 @@ public class Main {
 		if(audioType.equals("1") || audioType.equals("2")){	
 			System.out.println("Inserte el nombre del audio");
 			name = sc.nextLine().trim();
-			System.out.println("Inserte el el URL de la imagen");
-			imgURL = sc.nextLine().trim();
-			System.out.println("Inserte la duracion del audio en segundos");
-			duration = sc.nextInt();
-			sc.nextLine();
-			
-			if(audioType.equals("1")){
-				System.out.println("Inserte el nombre del album");
-				album = sc.nextLine();
-				System.out.println("Inserte el precio de venta de la cancion");
-				price = sc.nextDouble();
-				System.out.println("Escoja el genero de la cancion \n"+
-				"1. Rock \n"+
-				"2. Pop \n"+
-				"3. Trap \n"+
-				"4. Houes");
-				genre = sc.nextInt();
-			}else if(audioType.equals("2")){
-				System.out.println("Escoja la categoria de la cancion \n"+
-				"1. Politica\n"+
-				"2. Entretenimiento \n"+
-				"3. Videojuegos \n"+
-				"4. Moda");
-				genre = sc.nextInt();
+				if(control.searcAudio(name)==null){ 
+				System.out.println("Inserte el el URL de la imagen");
+				imgURL = sc.nextLine().trim();
+				System.out.println("Inserte la duracion del audio en segundos");
+				duration = sc.nextInt();
 				sc.nextLine();
-				System.out.println("Inserte la descripcion del podcast");
-				description = sc.nextLine();
+				
+				if(audioType.equals("1")){
+					System.out.println("Inserte el nombre del album");
+					album = sc.nextLine();
+					System.out.println("Inserte el precio de venta de la cancion");
+					price = sc.nextDouble();
+					System.out.println("Escoja el genero de la cancion \n"+
+					"1. Rock \n"+
+					"2. Pop \n"+
+					"3. Trap \n"+
+					"4. Houes");
+					genre = sc.nextInt();
+				}else if(audioType.equals("2")){
+					System.out.println("Escoja la categoria de la cancion \n"+
+					"1. Politica\n"+
+					"2. Entretenimiento \n"+
+					"3. Videojuegos \n"+
+					"4. Moda");
+					genre = sc.nextInt();
+					sc.nextLine();
+					System.out.println("Inserte la descripcion del podcast");
+					description = sc.nextLine();
+				}
+				msj = control.addAudio(control.createAudio(name, imgURL, duration, album, price, description, genre, Integer.parseInt(audioType)), creatorName);
+				System.out.println(msj);
+			}else{
+				System.out.println("Ya existe un audio con ese nombre");
 			}
-			msj = control.addAudio(control.createAudio(name, imgURL, duration, album, price, description, genre, Integer.parseInt(audioType)), creatorName);
-			System.out.println(msj);
 		}else{
 			System.out.println("Opcion invalida");
 		}
@@ -194,34 +201,42 @@ public class Main {
 		String which = null;
 		String playlistName = null;
 		String audioName = null;
-		System.out.println("Inserte un nombre para la playlist");
-		playlistName = sc.nextLine();
 		System.out.println("Inserte el identificador del usuario");
 		id = sc.nextLine();
-		if(control.deployUserOptions(id)[1]==null){
-			System.out.println(control.deployUserOptions(id)[0]);
-			System.out.println("Inserte el nombre del audio que desea agregar");
-			audioName = sc.nextLine();
-			if(control.createPlaylist(playlistName, id, audioName)){
-				System.out.println("Se creo la playlist");
-				do{
-					System.out.println("¿Deseas agregar otro audio? \n"+
-					"1. Si \n"+
-					"2. No");
-					which = sc.nextLine().trim();
-					if(which.equals("1")){
-						System.out.println(control.deployUserOptions(id)[0]);
-						System.out.println("Inserte el nombre del audio que desea agregar");
-						audioName = sc.nextLine();
-						System.out.println(control.editPlaylist(playlistName, audioName, 1, id));
+		if(control.deployUserOptions(id)[0]!=null){ 
+			if(control.deployUserOptions(id)[1]==null){
+				System.out.println("Inserte un nombre para la playlist");
+				playlistName = sc.nextLine();
+				if(control.searchPlaylistFromConsumer(playlistName, control.searchUser(id))==null){
+					System.out.println(control.deployUserOptions(id)[0]);
+					System.out.println("Inserte el nombre del audio que desea agregar");
+					audioName = sc.nextLine();
+					if(control.createPlaylist(playlistName, id, audioName)){
+						System.out.println("Se creo la playlist");
+						do{
+							System.out.println("¿Deseas agregar otro audio? \n"+
+							"1. Si \n"+
+							"2. No");
+							which = sc.nextLine().trim();
+							if(which.equals("1")){
+								System.out.println(control.deployUserOptions(id)[0]);
+								System.out.println("Inserte el nombre del audio que desea agregar");
+								audioName = sc.nextLine();
+								System.out.println(control.editPlaylist(playlistName, audioName, 1, id));
+							}
+						}while (which.equals("1"));
+						System.out.println("Playlist Concluida");
+					}else{
+						System.out.println("No se encontro el audio");
 					}
-				}while (which.equals("1"));
-				System.out.println("Playlist Concluida");
+				}else{
+					System.out.println("Ya tienes una playlist creada con ese nombre");
+				}
 			}else{
-				System.out.println("No se encontro el audio");
+				System.out.println(control.deployUserOptions(id)[1]);
 			}
 		}else{
-			System.out.println(control.deployUserOptions(id)[1]);
+			System.out.println("No se encontro al usuario");
 		}
 		
 	}
@@ -231,29 +246,95 @@ public class Main {
 		String which = null;
 		String playlistName = null;
 		String audioName = null;
+		String which2 = null;
 		System.out.println("Inserte el identificador de usuario");
 		id = sc.nextLine();
-		System.out.println("Inserte el nombre de la playlist");
-		playlistName = sc.nextLine();
-		System.out.println("¿Quieres agregar o eliminar un audio? \n"+
-		"1. Agregar \n"+
-		"2. Eliminar");
-		which = sc.nextLine();
-		System.out.println("Inserte el nombre del audio");
-		audioName = sc.nextLine();
-		if(which.equals("1") || which.equals("2")){
-			System.out.println(control.editPlaylist(playlistName, audioName, Integer.parseInt(which), id));
+		if(control.deployUserPlaylists(id)[0]!=null){
+			if(control.deployUserPlaylists(id)[1]!=null){	
+				System.out.println(control.deployUserPlaylists(id)[0]);
+				System.out.println("Inserte el nombre de la playlist");
+				playlistName = sc.nextLine();
+				if(control.deployPlaylistAudio(playlistName, id)!=null){
+					System.out.println("¿Quieres agregar o eliminar un audio? \n"+
+					"1. Agregar \n"+
+					"2. Eliminar");
+					which = sc.nextLine();
+					if(which.equals("1") || which.equals("2")){
+						System.out.println(control.deployPlaylistAudio(playlistName, id));
+						if(which.equals("1")){
+							System.out.println(control.deployUserOptions(id)[0]);
+						}
+						System.out.println("Inserte el nombre del audio");
+						audioName = sc.nextLine();
+						System.out.println(control.editPlaylist(playlistName, audioName, Integer.parseInt(which), id));
+						do{
+							System.out.println("¿Deseas hacer otro cambio? \n"+
+							"1. Si \n"+
+							"2. No");
+							which2 = sc.nextLine().trim();
+							if(which2.equals("1")){
+								System.out.println("¿Quieres agregar o eliminar un audio? \n"+
+								"1. Agregar \n"+
+								"2. Eliminar");
+								which = sc.nextLine();
+								if(which.equals("1") || which.equals("2")){
+									System.out.println(control.deployPlaylistAudio(playlistName, id));
+									if(which.equals("1")){
+										System.out.println(control.deployUserOptions(id)[0]);
+									}
+									System.out.println("Inserte el nombre del audio");
+									audioName = sc.nextLine();
+									System.out.println(control.editPlaylist(playlistName, audioName, Integer.parseInt(which), id));
+								}else{
+									System.out.println("Opcion invalida");
+								}	
+							}
+						}while (which2.equals("1"));
+						System.out.println("Edicion Concluida");
+					}else{
+						System.out.println("Opcion invalida");
+					}
+				}else{
+					System.out.println("No se encontro la playlist");
+				}
+			}else{
+				System.out.println("No tienes Playlist creadas");
+			}
 		}else{
-			System.out.println("Opcion invalida");
+			System.out.println("No se encontro al usuario");
 		}
+		
 		
 		
 
 	}
 
 	public void sharePlaylist() {
-		// TODO - implement Main.sharePlaylist
-		throw new UnsupportedOperationException();
+		String id = null;
+		String playlistName = null;
+		System.out.println("Inserte el identificador del usuario");
+		id = sc.nextLine();
+		if(control.deployUserPlaylists(id)[0]!=null){
+			if(control.deployUserPlaylists(id)[1]!=null){
+				System.out.println(control.deployUserPlaylists(id)[0]);	
+				System.out.println("Inserte un nombre de la playlist");
+				playlistName = sc.nextLine();
+				if(control.deployPlaylistAudio(playlistName, id)!=null){
+					if(control.deployPlaylistAudio(playlistName, id).equals("No hay audios en esta playlist")){
+						System.out.println("No hay audios en esta playlist");
+					}else{
+						System.out.println(control.showPlaylistSharecode(playlistName, id));
+					}
+				}else{
+					System.out.println("No se encontro la playlist");
+				}
+			}else{
+				System.out.println("No tienes playlist creadas");
+			}
+		}else{
+			System.out.println("No se encontro al usuario");
+		}
+		
 	}
 
 	public void playAudio() {

@@ -22,6 +22,12 @@ public class PlatformController {
 		users.add(new Premium("1", "k"));
 		users.add(new ContentCreator("a", "a"));
 		audios = new ArrayList<Audio>();
+		addAudio(createAudio("Wanna be yours", "xd", 1, null, 0.0, null, 1, 2), "a");
+		addAudio(createAudio("Wisdom", "xd", 1, null, 0.0, null, 1, 2), "a");
+		addAudio(createAudio("Vibras", "xd", 1, null, 0.0, null, 1, 2), "a");
+		addAudio(createAudio("Rises the moon", "xd", 1, null, 0.0, null, 1, 2), "a");	
+		addAudio(createAudio("Titi me pregunto", "xd", 1, null, 0.0, null, 1, 2), "a");
+		addAudio(createAudio("Problems", "xd", 1, null, 0.0, null, 1, 2), "a");
 	}
 
 	/**
@@ -80,19 +86,19 @@ public class PlatformController {
 	public String addAudio(Audio audio, String userId) {
 		String msj = "No se agrego el audio";
 		User anyUser = searchUser(userId);
-		if(anyUser!=null){
-			if(anyUser instanceof Artist && audio instanceof Song){
-				((Artist)(anyUser)).addSong(((Song)(audio)));
-				audios.add(audio);
-				msj = "Se agrego la cancion";
-			}else if(anyUser instanceof ContentCreator && audio instanceof PodCast){
-				((ContentCreator)(anyUser)).addPodcast(((PodCast)(audio)));
-				audios.add(audio);
-				msj = "Se agrego el podcast";
-			}else{
-				msj = "Este usuario no puede agregar este audio";
+			if(anyUser!=null){
+				if(anyUser instanceof Artist && audio instanceof Song){
+					((Artist)(anyUser)).addSong(((Song)(audio)));
+					audios.add(audio);
+					msj = "Se agrego la cancion";
+				}else if(anyUser instanceof ContentCreator && audio instanceof PodCast){
+					((ContentCreator)(anyUser)).addPodcast(((PodCast)(audio)));
+					audios.add(audio);
+					msj = "Se agrego el podcast";
+				}else{
+					msj = "Este usuario no puede agregar este audio";
+				}
 			}
-		}
 		return msj;
 	}
 	
@@ -148,6 +154,8 @@ public class PlatformController {
 			}else{
 				msj[1] = "Este usuario es no es de tipo consumidor";
 			} 
+		}else{
+			msj[0]= null;
 		}
 		return msj;
 		
@@ -189,6 +197,7 @@ public class PlatformController {
 		if(anyAudio!=null){
 			int i = users.indexOf(anyUser);
 			newPlaylist.addAudio(anyAudio);
+			newPlaylist.generateCode();
 			anyUser.addPlaylist(newPlaylist);
 			users.set(i, anyUser);
 			isCreated = true;
@@ -197,13 +206,58 @@ public class PlatformController {
 
 		return isCreated;
 	}
+
 	
 	/**
 	 * 
 	 * @param listId
 	 * @param consumerId
 	 */
-	public Playlist searchPlaylistFromConsumer(String name, ConsumerUser anyUser) {
+	public String showPlaylistSharecode(String listId, String consumerId) {
+		ConsumerUser anyConsumerUser  =(ConsumerUser)searchUser(consumerId);
+		Playlist anyPlaylist = null;
+		String msj = "";
+		if(anyConsumerUser!=null){
+			anyPlaylist = searchPlaylistFromConsumer(listId, anyConsumerUser);
+		}else{
+			msj = "No se encontro al usuario";
+		}
+		
+		if(anyPlaylist!=null){
+			int[][] matrix = anyPlaylist.getMatrix();
+			msj = "ID de Playlist: "+anyPlaylist.getId()+"\n";
+			msj+= "\n Matriz de ID \n"+ printMatrix(matrix);
+		}else{
+			msj = "No se encontro la playlist";	
+		}
+		return msj;
+	}
+
+	public String printMatrix(int[][] matrix){
+		String msj = "";
+		for (int i = 0; i < matrix.length; i++) {
+			msj+= "------------------------ \n";
+			for (int j = 0; j < matrix.length; j++) {
+				if(j==0){
+					msj +=	" "+matrix[i][j];	
+				}else if(j==matrix.length-1){
+					msj +=	" - "+matrix[i][j]+" - \n";
+				}else{
+					msj += " - "+matrix[i][j];
+				}
+			}
+		}
+		return msj; 
+	
+	}
+	
+	/**
+	 * 
+	 * @param listId
+	 * @param consumerId
+	 */
+	public Playlist searchPlaylistFromConsumer(String name, User anyUserC) {
+		ConsumerUser anyUser = (ConsumerUser)anyUserC;
 		Playlist anyPlaylist = null;
 		Boolean isFound = false;
 		if(anyUser!= null){
@@ -238,6 +292,7 @@ public class PlatformController {
 						}else{
 							anyPlaylist.getAudios().add(newAudio);
 							anyUserC.getPlaylists().remove(anyPlaylist);
+							anyPlaylist.generateCode();
 								anyUserC.addPlaylist(anyPlaylist);
 								users.remove(anyUser);
 								users.add(anyUserC);
@@ -249,6 +304,7 @@ public class PlatformController {
 						if(anyPlaylist.getAudios().contains(newAudio)){
 							anyPlaylist.getAudios().remove(newAudio);
 							anyUserC.getPlaylists().remove(anyPlaylist);
+							anyPlaylist.generateCode();
 								anyUserC.addPlaylist(anyPlaylist);
 								users.remove(anyUser);
 								users.add(anyUserC);
@@ -268,6 +324,7 @@ public class PlatformController {
 							}else{
 								anyPlaylist.getAudios().add(newAudio);
 								anyUserC.getPlaylists().remove(anyPlaylist);
+								anyPlaylist.generateCode();
 								anyUserC.addPlaylist(anyPlaylist);
 								users.remove(anyUser);
 								users.add(anyUserC);
@@ -278,6 +335,7 @@ public class PlatformController {
 							if(anyPlaylist.getAudios().contains(newAudio)){
 								anyPlaylist.getAudios().remove(newAudio);
 								anyUserC.getPlaylists().remove(anyPlaylist);
+								anyPlaylist.generateCode();
 								anyUserC.addPlaylist(anyPlaylist);
 								users.remove(anyUser);
 								users.add(anyUserC);
@@ -301,15 +359,6 @@ public class PlatformController {
 		return msj;
 	}
 
-	/**
-	 * 
-	 * @param listId
-	 * @param consumerId
-	 */
-	public String showPlaylistSharecode(int listId, int consumerId) {
-		// TODO - implement PlatformController.showPlaylistSharecode
-		throw new UnsupportedOperationException();
-	}
 
 	/**
 	 * 
@@ -334,6 +383,34 @@ public class PlatformController {
 			}
 		}
 		return isFound;
+	}
+
+	public String[] deployUserPlaylists(String id){
+		String[] msj = new String[]{null, "Teni play"};
+		int counter = 0;
+		ConsumerUser anyUser = (ConsumerUser)searchUser(id);
+		if(anyUser!=null){
+			msj[0] = "Tus Playlist: \n";
+			for (int i = 0; i < anyUser.getPlaylists().size(); i++) {
+				msj[0] += "- "+anyUser.getPlaylists().get(i).getName()+"\n";
+				counter++;
+			}
+		}
+		if(counter==0){
+			msj[1] = null;
+		}
+
+		
+		return msj;
+	}
+
+	public String deployPlaylistAudio(String playName, String userId){
+		String msj = null;
+		Playlist anPlaylist = searchPlaylistFromConsumer(playName, (ConsumerUser)searchUser(userId));
+		if(anPlaylist!=null){
+			msj = anPlaylist.audiosResume();
+		}
+		return msj;
 	}
 
 	/**
