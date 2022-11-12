@@ -24,12 +24,16 @@ public class PlatformController {
 		audios = new ArrayList<Audio>();
 		addAudio(createAudio("Wanna be yours", "xd", 1, null, 0.0, null, 1, 2), "a");
 		addAudio(createAudio("Wisdom", "xd", 1, null, 0.0, null, 1, 2), "a");
-		addAudio(createAudio("Vibras", "xd", 1, null, 0.0, null, 1, 2), "a");
+		addAudio(createAudio("Vibras", "xd", 100, null, 0.0, null, 1, 2), "a");
 		addAudio(createAudio("Rises the moon", "xd", 1, null, 0.0, null, 1, 2), "a");	
 		addAudio(createAudio("Titi me pregunto", "xd", 1, null, 0.0, null, 1, 2), "a");
 		addAudio(createAudio("Problems", "xd", 1, null, 0.0, null, 1, 2), "a");
 	}
-
+	public boolean updateAudio(Audio anyAudio){
+		audios.remove(anyAudio);
+		anyAudio.setTimesPlayed(anyAudio.getTimesPlayed()+1);
+		return audios.add(anyAudio);
+	}
 	/**
 	 * 
 	 * @param User
@@ -160,7 +164,9 @@ public class PlatformController {
 		return msj;
 		
 	}
-
+	public boolean isSong(Audio anyAudio){
+		return anyAudio instanceof Song;
+	}
 	public String deployPodcast(){
 		String msj = "Podcast disponbibles: \n";
 		int counter = 0;
@@ -365,7 +371,8 @@ public class PlatformController {
 	 * @param audioName
 	 * @param userId
 	 */
-	public boolean searchSongFromUser(Song anySong, ConsumerUser anyUser) {
+	public boolean searchSongFromUser(Audio anySong, User anyUser) {
+
 		Boolean isFound = false;
 		if(anyUser instanceof Premium){
 			for (int i = 0; i < ((Premium)(anyUser)).getPurchases().size() && !isFound; i++) {
@@ -411,6 +418,9 @@ public class PlatformController {
 			msj = anPlaylist.audiosResume();
 		}
 		return msj;
+	}
+	public boolean isPremium(User anyUser){
+		return anyUser instanceof Premium;
 	}
 
 	/**
