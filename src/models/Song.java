@@ -1,10 +1,15 @@
 package models;
-public class Song extends Audio {
+public class Song extends Audio{
 
 	private String album;
 	private double price;
 	private int timesSold;
 	private Genre genre;
+	private double totalSales;
+
+	public double getTotalSales() {
+		return totalSales;
+	}
 
 	public Genre getGenre() {
 		return genre;
@@ -13,7 +18,6 @@ public class Song extends Audio {
 	public void setGenre(Genre genre) {
 		this.genre = genre;
 	}
-
 	/**
 	 * 
 	 * @param name
@@ -22,15 +26,20 @@ public class Song extends Audio {
 	 * @param album
 	 * @param price
 	 */
-	public Song(String name, String imgURL, int duration, String album, Double price, Genre genre) {
-		super(name, imgURL, duration);
+	public Song(String name, String imgURL, int duration, String album, Double price, Genre genre, String author) {
+		super(name, imgURL, duration, author);
 		this.album = album;
 		this.price = price;
 		this.genre = genre;
+		this.totalSales = 0;
 	}
 
 	public String getAlbum() {
 		return this.album;
+	}
+
+	public void updateSales(){
+		this.totalSales = price*timesSold;
 	}
 
 	/**

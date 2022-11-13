@@ -1,13 +1,17 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
 
-public class PlatformController {
+
+public class PlatformController{
 
 	private String name;
 	private String nit;
 	private ArrayList<User> users;
 	private ArrayList<Audio> audios;
+
 
 	/**
 	 * 
@@ -21,17 +25,36 @@ public class PlatformController {
 		users = new ArrayList<User>();
 		users.add(new Premium("1", "k"));
 		users.add(new ContentCreator("a", "a"));
+		users.add(new Artist("b", "a"));
 		audios = new ArrayList<Audio>();
-		addAudio(createAudio("Wanna be yours", "xd", 1, null, 0.0, null, 1, 2), "a");
-		addAudio(createAudio("Wisdom", "xd", 1, null, 0.0, null, 1, 2), "a");
-		addAudio(createAudio("Vibras", "xd", 100, null, 0.0, null, 1, 2), "a");
-		addAudio(createAudio("Rises the moon", "xd", 1, null, 0.0, null, 1, 2), "a");	
-		addAudio(createAudio("Titi me pregunto", "xd", 1, null, 0.0, null, 1, 2), "a");
-		addAudio(createAudio("Problems", "xd", 1, null, 0.0, null, 1, 2), "a");
+		addAudio(createAudio("Wanna be yours", "xd", 150, null, 100.0, null, 1, 1, "b") , "b");
+		addAudio(createAudio("Wisdom", "xd", 200, null, 200.0, null, 1, 1,"b" ), "b");
+		addAudio(createAudio("Vibras", "xd", 100, null, 100.0, null, 1, 1,"b"), "b");
+		addAudio(createAudio("Rises the moon", "xd", 122, null, 800.0, null, 1, 1,"b"), "b");	
+		addAudio(createAudio("Titi me pregunto", "xd", 1, null, 100.0, null, 1, 1,"b"), "b");
+		addAudio(createAudio("Problems", "xd", 120, null, 150.0, null, 1, 1,"b"), "b");
+		addAudio(createAudio("Vos tan", "xd", 182, null, 20.0, null, 1, 2,"a"), "a");
+		addAudio(createAudio("Sky podcast", "xd", 120, null, 50.0, null, 1, 2,"a"), "a");
+		addAudio(createAudio("Dos nombres comunes", "xd", 100, null, 80.0, null, 1, 2,"a"), "a");
+		addAudio(createAudio("Con nombre de podcasst", "xd", 401, null, 90.0, null, 1, 2,"a"), "a");	
+		
 	}
-	public boolean updateAudio(Audio anyAudio){
+	public boolean updateAudio(Audio anyAudio, int playTime){
 		audios.remove(anyAudio);
+		ProducerUser anyUser = ((ProducerUser)(searchUser(anyAudio.getAuthor())));
+		anyUser.setPlayTime(anyUser.getPlayTime()+playTime);
+		anyUser.setPlays(anyUser.getPlays()+1);
 		anyAudio.setTimesPlayed(anyAudio.getTimesPlayed()+1);
+		if(anyUser instanceof ContentCreator){
+			((ContentCreator)(anyUser)).getPodcasts().remove(anyAudio);
+			((ContentCreator)(anyUser)).getPodcasts().add((PodCast)anyAudio);
+		}
+		if(anyUser instanceof Artist){
+			((Artist)(anyUser)).getSongs().remove(anyAudio);
+			((Artist)(anyUser)).getSongs().add((Song)anyAudio);
+		}
+		users.remove(anyUser);
+		users.add(anyUser);
 		return audios.add(anyAudio);
 	}
 	/**
@@ -73,12 +96,12 @@ public class PlatformController {
 		return anyUser;
 	}
 
-	public Audio createAudio(String name, String imgURL, int duration, String album, double price, String description, int genre,int audioType){
+	public Audio createAudio(String name, String imgURL, int duration, String album, double price, String description, int genre,int audioType, String author){
 		Audio anyAudio = null;
 		if(audioType==1){
-			anyAudio = new Song(name, imgURL, duration, album, price, giveSongGenre(genre));
+			anyAudio = new Song(name, imgURL, duration, album, price, giveSongGenre(genre), author);
 		}else{
-			anyAudio = new PodCast(name, imgURL, duration, description, givePodcastCategory(genre));
+			anyAudio = new PodCast(name, imgURL, duration, description, givePodcastCategory(genre), author);
 		}
 		return anyAudio;
 	}
@@ -288,10 +311,11 @@ public class PlatformController {
 		User anyUser = searchUser(UserName);
 		ConsumerUser anyUserC = parseUser(anyUser);
 		Audio newAudio = searcAudio(audioName);
+		boolean isDone = false;
 		if(anyUserC!= null){
 			Playlist anyPlaylist = searchPlaylistFromConsumer(playlistName, anyUserC);
 			if(anyPlaylist != null){
-				if(newAudio!=null && newAudio instanceof PodCast){
+				if(newAudio!=null && newAudio instanceof PodCast && !isDone){
 					if(action == 1){
 						if(anyPlaylist.getAudios().contains(newAudio)){
 							msj = "Este podcast ya pertenece a la playlist";
@@ -303,6 +327,7 @@ public class PlatformController {
 								users.remove(anyUser);
 								users.add(anyUserC);
 								msj = "Se agrego el podcast";
+								isDone = true;
 						}
 						
 					}
@@ -315,6 +340,7 @@ public class PlatformController {
 								users.remove(anyUser);
 								users.add(anyUserC);
 								msj = "Se elimino el podcast";
+								isDone = true;
 						}else{
 							msj = "Esta playlist no tiene este audio";
 						}
@@ -322,11 +348,11 @@ public class PlatformController {
 				}else{
 					msj = "No se encontro el audio";
 				}
-				if(newAudio!=null && newAudio instanceof Song){
+				if(newAudio!=null && newAudio instanceof Song && !isDone){
 					if(searchSongFromUser((Song)newAudio, anyUserC)){
 						if(action == 1){
 							if(anyPlaylist.getAudios().contains(newAudio)){
-								msj = "Esta playlist no tiene ese audio";
+								msj = "Esta playlist ya tiene esta cancion";
 							}else{
 								anyPlaylist.getAudios().add(newAudio);
 								anyUserC.getPlaylists().remove(anyPlaylist);
@@ -334,6 +360,8 @@ public class PlatformController {
 								anyUserC.addPlaylist(anyPlaylist);
 								users.remove(anyUser);
 								users.add(anyUserC);
+								msj = "Se agrego la cancion";
+								isDone = true;
 							}
 							
 						}
@@ -346,13 +374,14 @@ public class PlatformController {
 								users.remove(anyUser);
 								users.add(anyUserC);
 								msj = "Se elimino la cancion";
+								isDone = true;
 							}
 						}	
 					}else{
 					  msj= "No has comprado esta cancion";	
 					}
 				}else{
-				
+					msj = "No se encontro el audio";
 				}
 			}else{
 				msj = "No se encontro la playlist";
@@ -375,18 +404,13 @@ public class PlatformController {
 
 		Boolean isFound = false;
 		if(anyUser instanceof Premium){
-			for (int i = 0; i < ((Premium)(anyUser)).getPurchases().size() && !isFound; i++) {
-				if(((Premium)(anyUser)).getPurchases().get(i).getSong().equals(anySong)){
+				if(((Premium)(anyUser)).searchSong(anySong.getName())!=null){
 					isFound = true;
 				}
-			}
-			
 		}
 		if(anyUser instanceof Standard){
-			for (int i = 0; i < ((Standard)(anyUser)).getPurchases().size() && !isFound; i++) {
-				if(((Standard)(anyUser)).getPurchases().get(i).getSong().equals(anySong)){
-					isFound = true;
-				}
+			if(((Standard)(anyUser)).searchSong(anySong.getName())!=null){
+				isFound = true;
 			}
 		}
 		return isFound;
@@ -427,72 +451,240 @@ public class PlatformController {
 	 * 
 	 * @param Audio
 	 */
-	public String playAudio(int Audio) {
-		// TODO - implement PlatformController.playAudio
-		throw new UnsupportedOperationException();
+	public String deploySongs(){
+		String msj = "Canciones del sistema: \n";
+		int counter = 0;
+		for (int i = 0; i < audios.size(); i++) {
+			if(audios.get(i) instanceof Song){
+				msj += "-"+audios.get(i).getName()+"\n";
+				counter++;
+			}
+		}
+		if(counter == 0){
+			msj = null;
+		}
+		return msj;
 	}
-
 	/**
 	 * 
 	 * @param songName
 	 * @param userId
 	 */
-	public String buySong(int songName, int userId) {
-		// TODO - implement PlatformController.buySong
-		throw new UnsupportedOperationException();
+	public String buySong(String songName, String userId) {
+		String msj = "";
+		User anyUser = searchUser(userId);
+		if(anyUser instanceof ConsumerUser){
+			Audio anyAudio = searcAudio(songName);
+			if(anyAudio instanceof Song){	
+				if(!searchSongFromUser(anyAudio, anyUser)){
+					if(anyUser instanceof Premium){
+						if(((Premium)(anyUser)).addSong((Song)anyAudio)){
+							msj = "Compra exitosa";
+							((Song)anyAudio).setTimesSold(((Song)anyAudio).getTimesSold()+1);
+						}else{
+							msj = "No se pudo comprar la cancion";
+						}
+					}
+					if(anyUser instanceof Standard){
+						if(((Standard)(anyUser)).addSong((Song)anyAudio)){
+							msj = "Compra exitosa";
+							((Song)anyAudio).setTimesSold(((Song)anyAudio).getTimesSold()+1);
+							
+						}else{
+							msj = "No tienes espacio para mas canciones";
+						}
+						
+					}
+				}else{
+					msj = "Ya has comprado esta cancion";
+				}
+			}else{
+				msj = "No se encontro la cancion";
+			}
+		}else{
+			msj = "Este usuario no es de tipo consumidor";
+		}
+		return msj;
 	}
 
-	public String generateAudioReport() {
-		// TODO - implement PlatformController.generateAudioReport
-		throw new UnsupportedOperationException();
+	public String generateAudioReport(String userId) {
+		int[] audioPlays = getAudioPlays();
+		return "Informes de datos: \n\n"+
+		"Reproducciones de canciones: "+audioPlays[1]+"\n"+
+		"Reproducciones de Podcast: "+audioPlays[0]+"\n\n"+
+		getMaxGenre(userId)+"\n"+
+		getMaxCategory(userId)+"\n\n"+
+		getTop5ArtistnCreator()+"\n\n"+
+		getTop10SongnPodcast()+"\n\n"+
+		getGenreSales()+"\n\n"+
+		getBestSeller();
+	}
+	public int[] getAudioPlays(){
+		int totalPlaysSong = 0;
+		int totalPlaysPodcast = 0;
+		for (int i = 0; i < audios.size(); i++) {
+			if(audios.get(i) instanceof PodCast){
+				totalPlaysPodcast += audios.get(i).getTimesPlayed();
+			}
+			if(audios.get(i) instanceof Song){
+				totalPlaysSong += audios.get(i).getTimesPlayed();
+			}
+		}
+		return new int[]{totalPlaysPodcast, totalPlaysSong};
 	}
 
-	public String getMaxGenre() {
-		// TODO - implement PlatformController.getMaxGenre
-		throw new UnsupportedOperationException();
+	public String getMaxGenre(String userId) {
+		String msj= "";
+		User anyUser = searchUser(userId);
+		if(anyUser instanceof ConsumerUser){
+			msj  =((ConsumerUser)(anyUser)).calculateMostGenre();
+		}else{
+			msj = "Este usuario no es de tipo consumidor o no existe";
+		}
+		return msj;
+	}
+	public boolean playAudio(String userId, Audio audio){
+		ConsumerUser anyUser= (ConsumerUser)searchUser(userId);
+		Boolean isUpdate = false;
+		if(audio instanceof Song){
+			anyUser.updateGenrePlays(((Song)audio).getGenre());
+			isUpdate = true;
+		}
+		if(audio instanceof PodCast){
+			anyUser.updateCategoryPlays(((PodCast)(audio)).getCategory());
+			isUpdate = true;
+		}
+		return isUpdate;
 	}
 
-	/**
-	 * 
-	 * @param userId
-	 */
-	public String getMaxGenre(int userId) {
-		// TODO - implement PlatformController.getMaxGenre
-		throw new UnsupportedOperationException();
-	}
-
-	public String getMaxCategory() {
-		// TODO - implement PlatformController.getMaxCategory
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param userId
-	 */
-	public String getMaxCategort(int userId) {
-		// TODO - implement PlatformController.getMaxCategort
-		throw new UnsupportedOperationException();
+	public String getMaxCategory(String userId) {
+		String msj= "";
+		User anyUser = searchUser(userId);
+		if(anyUser instanceof ConsumerUser){
+			msj  =((ConsumerUser)(anyUser)).calculateMostCategory();
+		}else{
+			msj = "Este usuario no es de tipo consumidor";
+		}
+		return msj;
 	}
 
 	public String getTop5ArtistnCreator() {
-		// TODO - implement PlatformController.getTop5ArtistnCreator
-		throw new UnsupportedOperationException();
+		ArrayList<ProducerUser> creators = new ArrayList<ProducerUser>();
+		ArrayList<ProducerUser> artists = new ArrayList<ProducerUser>();
+		for (int i = 0; i < users.size(); i++) {
+			if(users.get(i) instanceof ContentCreator){
+				creators.add((ProducerUser)users.get(i));
+			}
+			if(users.get(i) instanceof Artist){
+				artists.add((ProducerUser)users.get(i));
+			}
+		}
+		Collections.sort(creators, Collections.reverseOrder());
+		Collections.sort(artists, Collections.reverseOrder());
+		String msj = "Top 5 Creadores de contenido \n\n";
+			if(creators.size()>1){
+				for (int i = 0; i <= 5 && i<creators.size(); i++) {
+					msj += i+1+":"+creators.get(i).getName()+ " Reproducciones: "+creators.get(i).getPlays() + "\n";
+				}
+			}else{
+				msj += 1+":"+creators.get(0).getName()+ " Reproducciones: "+creators.get(0).getPlays() + "\n";
+			}
+			String msj2 = "\n Top 5 artistas \n\n";
+			if(artists.size()>1){ 
+				for (int i = 0; i <= 5 && i<creators.size(); i++) {
+					msj2 += i+1+":"+artists.get(i).getName()+ " Reproducciones: "+artists.get(i).getPlays() + "\n";
+				}
+			}else{
+				msj2 += 1+":"+artists.get(0).getName()+ " Reproducciones: "+artists.get(0).getPlays() + "\n";
+			}
+		return msj+msj2;
 	}
 
 	public String getTop10SongnPodcast() {
-		// TODO - implement PlatformController.getTop10SongnPodcast
-		throw new UnsupportedOperationException();
+		ArrayList<Audio> songs= new ArrayList<Audio>();
+		ArrayList<Audio> podcast = new ArrayList<Audio>();
+		for (int i = 0; i < audios.size(); i++) {
+			if(audios.get(i) instanceof Song){
+				songs.add(audios.get(i));
+			}
+			if(audios.get(i) instanceof PodCast){
+				podcast.add(audios.get(i));
+			}
+		}
+		Collections.sort(songs, Collections.reverseOrder());
+		Collections.sort(podcast, Collections.reverseOrder());
+		String msj = "Top 10 Canciones \n\n";
+		for (int i = 0; i <= 10 && i<songs.size(); i++) {
+			msj += i+1+": "+songs.get(i).getName()+" Genero: "+((Song)songs.get(i)).getGenre() +" Reproducciones: "+songs.get(i).getTimesPlayed() + "\n";
+			
+		}
+
+		String msj2 = "\n Top 10 Podcast \n\n";
+		for (int i = 0; i <= 10 && i<podcast.size(); i++) {
+			msj2 += i+1+": "+podcast.get(i).getName()+" Categoria: "+((PodCast)podcast.get(i)).getCategory() + " Reproducciones: "+podcast.get(i).getTimesPlayed() + "\n";
+		}
+		return msj+msj2;
 	}
 
 	public String getGenreSales() {
-		// TODO - implement PlatformController.getGenreSales
-		throw new UnsupportedOperationException();
+		String msj = "Ventas por genero \n";
+		int[] rockSales = new int[]{0, 0};
+		int[] popSales = new int[]{0, 0};
+		int[] trapSales = new int[]{0, 0};
+		int[] houseSales = new int[]{0, 0};
+		
+		Song anySong = null;
+		for (int i = 0; i < audios.size(); i++) {
+			if(audios.get(i) instanceof Song){
+				anySong = (Song)audios.get(i);
+				anySong.updateSales();
+				if(anySong.getGenre()==Genre.HOUSE){
+					houseSales[0] += anySong.getTimesSold();
+					houseSales[1] += anySong.getTotalSales();
+				}
+				if(anySong.getGenre()==Genre.TRAP){
+					trapSales[0] += anySong.getTimesSold();
+					trapSales[1] += anySong.getTotalSales();
+				}
+				if(anySong.getGenre()==Genre.POP){
+					popSales[0] += anySong.getTimesSold();
+					popSales[1] += anySong.getTotalSales();
+				}
+				if(anySong.getGenre()==Genre.ROCK){
+					rockSales[0] += anySong.getTimesSold();
+					rockSales[1] += anySong.getTotalSales();
+				}
+			} 
+		}
+		int[][] genres = new int[][]{rockSales, popSales, trapSales, houseSales};
+		String[] genresName = new String[]{"Rock", "Pop", "Trap", "House"};
+		for (int i = 0; i < genres.length; i++) {
+			msj +=  genresName[i]+"\n";
+			for (int j = 0; j < genres[0].length; j++) {
+				msj+= "Ventas: "+genres[i][j]+"\n"+
+				"Valor de ventas: "+genres[i][j+1]+"\n\n";
+				j=2;
+			}
+		}
+		return msj;
 	}
 
 	public String getBestSeller() {
-		// TODO - implement PlatformController.getBestSeller
-		throw new UnsupportedOperationException();
+		String msj =  "";
+		ArrayList<Song> songs= new ArrayList<Song>();
+		for (int i = 0; i < audios.size(); i++) {
+			if(audios.get(i) instanceof Song){
+				songs.add((Song)audios.get(i));
+			}
+		}
+		Collections.sort(songs, new SaleComparator());
+		if(songs.size()!=0){
+			msj = "La cancion mas vendida es: "+songs.get(0).getName()+ " Total ventas: "+songs.get(0).getTimesSold()+ " Valor de venta: "+songs.get(0).getTotalSales();
+		}else{
+			msj = "No hay canciones";
+		}
+		return msj;
+
 	}
 	public String giveUserId(User user){
 		String id = null;

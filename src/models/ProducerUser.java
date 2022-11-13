@@ -1,5 +1,5 @@
 package models;
-public class ProducerUser extends User {
+public class ProducerUser extends User implements Comparable<ProducerUser>{
 
 	private String name;
 	private String imgURL;
@@ -17,6 +17,9 @@ public class ProducerUser extends User {
 		this.imgURL = imgURL;
 		plays = 0;
 		playTime = 0;
+	}
+	public int compareTo(ProducerUser b){
+		return this.plays - b.getPlays();
 	}
 
 	/**

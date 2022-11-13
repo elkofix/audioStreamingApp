@@ -4,6 +4,10 @@ public class PodCast extends Audio {
 	private String description;
 	private Category category;
 
+	public Category getCategory() {
+		return category;
+	}
+
 	/**
 	 * 
 	 * @param name
@@ -11,8 +15,8 @@ public class PodCast extends Audio {
 	 * @param duration
 	 * @param description
 	 */
-	public PodCast(String name, String imgURL, int duration, String description, Category category) {
-		super(name, imgURL, duration);
+	public PodCast(String name, String imgURL, int duration, String description, Category category, String author) {
+		super(name, imgURL, duration, author);
 		this.description = description;
 		this.category = category;
 	}

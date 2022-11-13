@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class Artist extends ProducerUser {
 	ArrayList<Song> songs;
+	public ArrayList<Song> getSongs() {
+		return songs;
+	}
+
 	/**
 	 * 
 	 * @param name

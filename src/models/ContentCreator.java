@@ -1,9 +1,12 @@
 package models;
-
 import java.util.ArrayList;
 
 public class ContentCreator extends ProducerUser {
 	private ArrayList<PodCast> podcasts;
+	public ArrayList<PodCast> getPodcasts() {
+		return podcasts;
+	}
+
 	/**
 	 * 
 	 * @param name

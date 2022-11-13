@@ -32,6 +32,8 @@ public class Main {
 				"4. Editar lista de reproduccion\n" +
 				"5. Compartir lista de reproduccion\n" +
 				"6. Reproducir una cancion\n" +
+				"7. Comprar una cancion\n" +
+				"8. Generar reporte\n" +
 				"0. Exit. ");
 		option =  validateIntegerInput();
 		return option; 
@@ -59,6 +61,12 @@ public class Main {
 			break;
 			case 6:
 				playAudio();
+			break;
+			case 7:
+				buySong();
+			break;
+			case 8:
+				showPlatformResume();
 			break;
 			case 0: 
 				System.out.println("Exit program.");
@@ -190,7 +198,7 @@ public class Main {
 					System.out.println("Inserte la descripcion del podcast");
 					description = sc.nextLine();
 				}
-				msj = control.addAudio(control.createAudio(name, imgURL, duration, album, price, description, genre, Integer.parseInt(audioType)), creatorName);
+				msj = control.addAudio(control.createAudio(name, imgURL, duration, album, price, description, genre, Integer.parseInt(audioType), creatorName), creatorName);
 				System.out.println(msj);
 			}else{
 				System.out.println("Ya existe un audio con ese nombre");
@@ -208,7 +216,7 @@ public class Main {
 		System.out.println("Inserte el identificador del usuario");
 		id = sc.nextLine();
 		if(control.deployUserOptions(id)[0]!=null){ 
-			if(control.deployUserOptions(id)[1]!=null){
+			if(control.deployUserOptions(id)[1]==null){
 				System.out.println("Inserte un nombre para la playlist");
 				playlistName = sc.nextLine();
 				if(control.searchPlaylistFromConsumer(playlistName, control.searchUser(id))==null){
@@ -371,6 +379,7 @@ public class Main {
 						Boolean playAd = true;
 						String option = "1";
 						Boolean isFound = false;
+						int playedTime = 0;
 						for (int i = 0; i <= seconds && !isFound; i++) {
 							if(!isPremium && !isSong && playAd){
 								System.out.println("Anuncio publicitario, en unos segundos empezara la producción \n"+
@@ -429,11 +438,13 @@ public class Main {
 							if(i>=seconds){
 								isFound = true;
 							}
+							playedTime = i;
 						}
-						control.updateAudio(control.searcAudio(audioName));
+						control.updateAudio(control.searcAudio(audioName), playedTime);
+						control.playAudio(id, control.searcAudio(audioName));
 						System.out.println("Fin de la reproduccion");				
 						do{
-							System.out.println("Deseas reproducir otro audio \n"+
+							System.out.println("Deseas reproducir otro audio? \n"+
 							"1. Si \n"+
 							"2. No");
 							which = sc.nextLine();
@@ -509,11 +520,13 @@ public class Main {
 												if(i>=seconds){
 													isFound = true;
 												}
+												playedTime = i;
 											}
 										}else{
 											System.out.println("No has comprado esta cancion");
 										}
-									control.updateAudio(control.searcAudio(audioName));
+									control.updateAudio(control.searcAudio(audioName), playedTime);
+									control.playAudio(id, control.searcAudio(audioName));
 									System.out.println("Fin de la reproduccion");
 									}else{
 										System.out.println("No se encontro el audio");
@@ -538,13 +551,32 @@ public class Main {
 						
 		
 	}
-	public void simulatePlay(int seconds){
-		
-	}
 
 	public void buySong() {
-		// TODO - implement Main.buySong
-		throw new UnsupportedOperationException();
+		String id  = null;
+		String songName = null;
+		System.out.println("Inserte el nombre de usuario");
+		id = sc.nextLine();
+		if(control.deploySongs()!=null){
+			if(control.searchUser(id)!=null){
+				System.out.println(control.deploySongs());
+				System.out.println("Inserte el nombre la cancion");
+				songName = sc.nextLine();
+				System.out.println(control.buySong(songName, id));
+			}else{
+				System.out.println("No se encontro al usuario");
+			}
+		}else{
+			System.out.println("Aun no hay canciones creadas en el servicio, Intenta mas tarde");
+		}
+	}
+
+	public void showPlatformResume(){
+		String id = null;
+		System.out.println("Inserte el id del usuario");
+		id = sc.nextLine();
+		System.out.println(control.generateAudioReport(id));
+			
 	}
 
 	

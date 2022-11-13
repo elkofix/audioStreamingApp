@@ -1,10 +1,13 @@
 package models;
 
-import java.security.PublicKey;
-
-public class Audio {
+public class Audio implements Comparable<Audio>{
 
 	private String name;
+	private String author;
+	public String getAuthor() {
+		return author;
+	}
+
 	private String imgURL;
 	private int duration;
 	private int timesPlayed;
@@ -15,12 +18,15 @@ public class Audio {
 	 * @param imgURL
 	 * @param duration
 	 */
-	public Audio(String name, String imgURL, int duration) {
+	public Audio(String name, String imgURL, int duration, String author) {
+		this.author = author;
 		this.name = name;
 		this.imgURL = imgURL;
 		this.duration = duration;
 	}
-
+	public int compareTo(Audio b){
+		return this.timesPlayed- b.getTimesPlayed();
+	}
 	public String getName() {
 		return this.name;
 	}
@@ -69,14 +75,5 @@ public class Audio {
 		this.timesPlayed = timesPlayed;
 	}
 
-	public void play() {
-		// TODO - implement Audio.play
-		throw new UnsupportedOperationException();
-	}
-
-	public void stop() {
-		// TODO - implement Audio.stop
-		throw new UnsupportedOperationException();
-	}
 
 }
