@@ -461,7 +461,7 @@ public class Main {
 							playedTime = i;
 						}
 						control.updateAudio(control.searcAudio(audioName), playedTime);
-						control.playAudio(id, control.searcAudio(audioName));
+						control.playAudio(id, control.searcAudio(audioName), playedTime);
 						System.out.println("Fin de la reproduccion");				
 						do{
 							System.out.println("Deseas reproducir otro audio? \n"+
@@ -546,7 +546,7 @@ public class Main {
 											System.out.println("No has comprado esta cancion");
 										}
 									control.updateAudio(control.searcAudio(audioName), playedTime);
-									control.playAudio(id, control.searcAudio(audioName));
+									control.playAudio(id, control.searcAudio(audioName), playedTime);
 									System.out.println("Fin de la reproduccion");
 									}else{
 										System.out.println("No se encontro el audio");

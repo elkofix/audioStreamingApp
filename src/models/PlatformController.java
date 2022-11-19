@@ -608,7 +608,7 @@ public class PlatformController{
 	 * @param audio name of the played audio
 	 * @return true if updated, else false
 	 */
-	public boolean playAudio(String userId, Audio audio){
+	public boolean playAudio(String userId, Audio audio, int playedTime){
 		ConsumerUser anyUser= (ConsumerUser)searchUser(userId);
 		Boolean isUpdate = false;
 		if(audio instanceof Song){
@@ -618,6 +618,11 @@ public class PlatformController{
 		if(audio instanceof PodCast){
 			anyUser.updateCategoryPlays(((PodCast)(audio)).getCategory());
 			isUpdate = true;
+		}
+		if(isUpdate){
+			anyUser.setPlayedTime(anyUser.getPlayedTime()+playedTime);
+			users.remove(anyUser);
+			users.add(anyUser);
 		}
 		return isUpdate;
 	}
