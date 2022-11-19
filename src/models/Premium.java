@@ -1,30 +1,26 @@
 package models;
-
+/** Represents a Premiun User type.
+ * @author Alejandro Cordoba
+ * @version 1.0
+ * @since 1.0
+*/
 public class Premium extends ConsumerUser {
 	
 	/**
-	 * 
-	 * @param id
-	 * @param nickname
+	 * Constructor of Premium class
+	 * @param id user id
+	 * @param nickname nickname of the user
 	 */
-
-
 	public Premium(String id, String nickname) {
 		super(id, nickname);
 	}
 
-	public String calculateMostCreator() {
-		// TODO - implement Premium.calculateMostCreator
-		throw new UnsupportedOperationException();
-	}
-
-	public String calculateMostArtist() {
-		// TODO - implement Premium.calculateMostArtist
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean addSong(Song Song) {
-		return getPurchases().add(new Purchase(Song));
+	/**Adds a song to the purchase list
+	 *@param song song to be added
+	 *@return true if added, else false
+	 */
+	public boolean addSong(Song song) {
+		return getPurchases().add(new Purchase(song));
 	}
 
 }

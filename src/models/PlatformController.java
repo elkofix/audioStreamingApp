@@ -2,7 +2,11 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
+/** Contains all the logic of the platform.
+ * @author Alejandro Cordoba
+ * @version 1.1
+ * @since 1.0
+*/
 
 public class PlatformController{
 
@@ -63,7 +67,7 @@ public class PlatformController{
 	}
 	/**
 	 * Adds a user to Platform's list
-	 * @param User user object to be added
+	 * @param user user object to be added
 	 * @return Confirmation message if added, else error message
 	 */
 	public String addUser(User user) {
@@ -134,7 +138,7 @@ public class PlatformController{
 
 	/**
 	 * Adds and audio to a producer user list
-	 * @param Audio Audio to be added
+	 * @param audio Audio to be added
 	 * @param userId id of the producer user - it's mandatory to be a producer, else and exception message is thrown
 	 * @return Confirmation message
 	 */
@@ -253,11 +257,10 @@ public class PlatformController{
 		return anyAudio;
 	}
 
-	/**Creates a playlist with a audio and adds it to a given user
+	/**Creates a playlista nd adds it to a given user
 	 * @param name name of the playlist
 	 * @param userId ID of the user
-	 * @param audioName name of the audio
-	 * @return true if is the audio is 
+	 * @return true if is added else, false 
 	 */
 	public boolean createPlaylist(String name, String userId){
 		ConsumerUser anyUser = (ConsumerUser)searchUser(userId);
@@ -271,9 +274,10 @@ public class PlatformController{
 
 	
 	/**
-	 * 
-	 * @param listId
-	 * @param consumerId
+	 * Shows the share code of a playlist from a given user and displays its matrix
+	 * @param listId id of the playlist
+	 * @param consumerId id of the user
+	 * @return Code and matrix of the playlist - error message if playlist or user doesn't exist
 	 */
 	public String showPlaylistSharecode(String listId, String consumerId) {
 		ConsumerUser anyConsumerUser  =(ConsumerUser)searchUser(consumerId);
@@ -295,6 +299,10 @@ public class PlatformController{
 		return msj;
 	}
 
+	/**Prints a given Integer matrix
+	 * @param matrix matrix to be printed
+	 * @return printed matrix
+	 */
 	public String printMatrix(int[][] matrix){
 		String msj = "";
 		for (int i = 0; i < matrix.length; i++) {
@@ -313,10 +321,11 @@ public class PlatformController{
 	
 	}
 	
-	/**
-	 * 
-	 * @param listId
-	 * @param consumerId
+
+	/**Search a playlist from a given user
+	 * @param name name of the playlist
+	 * @param anyUserC Consumer User object
+	 * @return found playlist, else null
 	 */
 	public Playlist searchPlaylistFromConsumer(String name, User anyUserC) {
 		ConsumerUser anyUser = (ConsumerUser)anyUserC;
@@ -335,14 +344,15 @@ public class PlatformController{
 
 	/**
 	 * Adds or removes and audio to a given playlist
-	 * @param Playlist Playlist to be edited
+	 * @param playlistName name of the playlist
+	 * @param userName name of playlist's owner
 	 * @param audioName audio to be added or removed
 	 * @param action action to be executed, 1 being adding the audio, 2 being remove the audio
 	 * @return a message if the action is completed or an alert for any exception
 	 */
-	public String editPlaylist(String playlistName, String audioName, int action, String UserName) {
+	public String editPlaylist(String playlistName, String audioName, int action, String userName) {
 		String msj = "Lol";
-		User anyUser = searchUser(UserName);
+		User anyUser = searchUser(userName);
 		ConsumerUser anyUserC = parseUser(anyUser);
 		Audio newAudio = searcAudio(audioName);
 		boolean isDone = false;
@@ -429,29 +439,25 @@ public class PlatformController{
 	}
 
 
-	/**
-	 * 
-	 * @param audioName
-	 * @param userId
+	/**Checks if a user has bought a song
+	 * @param anySong song to be checjed
+	 * @param anyUser user to check the song to
+	 * @return true if is found, else false
 	 */
 	public boolean searchSongFromUser(Audio anySong, User anyUser) {
-
 		Boolean isFound = false;
-		if(anyUser instanceof Premium){
-				if(((Premium)(anyUser)).searchSong(anySong.getName())!=null){
-					isFound = true;
-				}
-		}
-		if(anyUser instanceof Standard){
-			if(((Standard)(anyUser)).searchSong(anySong.getName())!=null){
+		if(((ConsumerUser)(anyUser)).searchSong(anySong.getName())!=null){
 				isFound = true;
-			}
 		}
 		return isFound;
 	}
 
+	/**Deploys a message with the created playlist of a given user
+	 * @param id user id
+	 * @return two Strings, first with the playlists, second null if no playlists are found
+	 */
 	public String[] deployUserPlaylists(String id){
-		String[] msj = new String[]{null, "Teni play"};
+		String[] msj = new String[]{null, "Teni play<"};
 		int counter = 0;
 		ConsumerUser anyUser = (ConsumerUser)searchUser(id);
 		if(anyUser!=null){
@@ -469,6 +475,11 @@ public class PlatformController{
 		return msj;
 	}
 
+	/**Deploys a message with the audios in a playlist from a given user
+	 * @param playName playlist name
+	 * @param userId user id
+	 * @return message with the audios in the playlist
+	 */
 	public String deployPlaylistAudio(String playName, String userId){
 		String msj = null;
 		Playlist anPlaylist = searchPlaylistFromConsumer(playName, (ConsumerUser)searchUser(userId));
@@ -477,13 +488,16 @@ public class PlatformController{
 		}
 		return msj;
 	}
+	/**Checks if a user is an instance of premiun
+	 * @param anyUser user object to be checked
+	 * @return true if premium else, false
+	 */
 	public boolean isPremium(User anyUser){
 		return anyUser instanceof Premium;
 	}
 
 	/**
-	 * 
-	 * @param Audio
+	 * @return deploys songs available in the platform
 	 */
 	public String deploySongs(){
 		String msj = "Canciones del sistema: \n";
@@ -500,9 +514,10 @@ public class PlatformController{
 		return msj;
 	}
 	/**
-	 * 
-	 * @param songName
-	 * @param userId
+	 * Adds a purchase to the list of a given user
+	 * @param songName name of the song
+	 * @param userId id of the user
+	 * @return Confirmation message, or exception message
 	 */
 	public String buySong(String songName, String userId) {
 		String msj = "";
@@ -541,6 +556,10 @@ public class PlatformController{
 		return msj;
 	}
 
+	/**Generates a general Audio report and 2 stadistics from a given user 
+	 * @param userId id of the user
+	 * @return general report of the platform and stadistics from user if found
+	 */
 	public String generateAudioReport(String userId) {
 		int[] audioPlays = getAudioPlays();
 		return "Informes de datos: \n\n"+
@@ -553,6 +572,9 @@ public class PlatformController{
 		getGenreSales()+"\n\n"+
 		getBestSeller();
 	}
+	/**Gets the times podcasts and songs has been played
+	 * @return two integer, first podcast plays, second song plays
+	 */
 	public int[] getAudioPlays(){
 		int totalPlaysSong = 0;
 		int totalPlaysPodcast = 0;
@@ -567,6 +589,10 @@ public class PlatformController{
 		return new int[]{totalPlaysPodcast, totalPlaysSong};
 	}
 
+	/**Gets the most played genre from a given user
+	 * @param userId id of the user 
+	 * @return Most played genre, or exception if not consumer
+	 */
 	public String getMaxGenre(String userId) {
 		String msj= "";
 		User anyUser = searchUser(userId);
@@ -577,6 +603,11 @@ public class PlatformController{
 		}
 		return msj;
 	}
+	/**Updates play information after an audio is played
+	 * @param userId id of the user that played the audio
+	 * @param audio name of the played audio
+	 * @return true if updated, else false
+	 */
 	public boolean playAudio(String userId, Audio audio){
 		ConsumerUser anyUser= (ConsumerUser)searchUser(userId);
 		Boolean isUpdate = false;
@@ -590,7 +621,11 @@ public class PlatformController{
 		}
 		return isUpdate;
 	}
-
+	
+	/**Gets the most played category from a given user
+	 * @param userId user id
+	 * @return Max category or exception if not consumer
+	 */
 	public String getMaxCategory(String userId) {
 		String msj= "";
 		User anyUser = searchUser(userId);
@@ -602,6 +637,9 @@ public class PlatformController{
 		return msj;
 	}
 
+	/**Gets the top 5 artists and top 5 creators by number of plays
+	 * @return top 5 artists and creators or exception if no producers found
+	 */
 	public String getTop5ArtistnCreator() {
 		ArrayList<ProducerUser> creators = new ArrayList<ProducerUser>();
 		ArrayList<ProducerUser> artists = new ArrayList<ProducerUser>();
@@ -642,6 +680,9 @@ public class PlatformController{
 		return msj+msj2;
 	}
 
+	/**Get the top 10 songs and top 10 podcast by number of plays
+	 * @return top 10 songs and podcast or exception if no audios found
+	 */
 	public String getTop10SongnPodcast() {
 		ArrayList<Audio> songs= new ArrayList<Audio>();
 		ArrayList<Audio> podcast = new ArrayList<Audio>();
@@ -668,6 +709,9 @@ public class PlatformController{
 		return msj+msj2;
 	}
 
+	/**Calculates the sales by gender
+	 * @return Sales by gender
+	 */
 	public String getGenreSales() {
 		String msj = "Ventas por genero \n";
 		int[] rockSales = new int[]{0, 0};
@@ -711,6 +755,9 @@ public class PlatformController{
 		return msj;
 	}
 
+	/**Gets the best selling song
+	 * @return best seller 
+	 */
 	public String getBestSeller() {
 		String msj =  "";
 		ArrayList<Song> songs= new ArrayList<Song>();
@@ -728,6 +775,10 @@ public class PlatformController{
 		return msj;
 
 	}
+	/**Gets the idenfier from a user, no matter the user type
+	 * @param user object user
+	 * @return user identifier
+	 */
 	public String giveUserId(User user){
 		String id = null;
 		if(user != null){
@@ -741,6 +792,10 @@ public class PlatformController{
 
 		return id;
 	}
+	/** Parse a user to consumerUser
+	 * @param anyUser user to be parsed
+	 * @return consumer user if instance of, else null
+	 */
 	public ConsumerUser parseUser(User anyUser){
 		ConsumerUser anyUserC = null;
 		if(anyUser instanceof Premium || anyUser instanceof Standard){
@@ -749,6 +804,10 @@ public class PlatformController{
 		return anyUserC;
 	}
 	
+	/**Gives a genre from a given index
+	 * @param option index
+	 * @return genre selected
+	 */
 	public Genre giveSongGenre(int option){
 		Genre givenGenre = null;
 		switch(option){
@@ -772,6 +831,10 @@ public class PlatformController{
 		return givenGenre;
 	}
 
+	/**Gives a category from a given index
+	 * @param option index selected
+	 * @return category selected
+	 */
 	public Category givePodcastCategory(int option){
 		Category givenCategory = null;
 		switch(option){

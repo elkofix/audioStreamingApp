@@ -1,8 +1,11 @@
 package models;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-
+/** Represents a Consumer User tyoe.
+ * @author Alejandro Cordoba
+ * @version 1.0
+ * @since 1.0
+*/
 public abstract class ConsumerUser extends User {
 
 	private String id;
@@ -14,9 +17,9 @@ public abstract class ConsumerUser extends User {
 	private int playedTime;
 
 	/**
-	 * 
-	 * @param id
-	 * @param nickname
+	 * Constructor of the ConsumerUser class
+	 * @param id id of the user
+	 * @param nickname nickname of the user
 	 */
 	public ConsumerUser(String id, String nickname) {
 		super();
@@ -38,17 +41,16 @@ public abstract class ConsumerUser extends User {
 
 	}
 
-	public ArrayList<Purchase> getPurchases() {
-		return purchases;
-	}
+	/**Adds a song to the list of purchases
+	 * @param Song song to be added 
+	 * @return true if added, else false
+	 */
+	public abstract boolean addSong(Song Song);
 
-	public void setPurchases(ArrayList<Purchase> purchases) {
-		this.purchases = purchases;
-	}
-
-		/**
-	 * 
-	 * @param songName
+	/**
+	 * Search a song in the purchase list
+	 * @param songName name of the song
+	 * @return Obj song found, else null
 	 */
 	public Song searchSong(String songName) {
 		Song anySong = null;
@@ -60,12 +62,9 @@ public abstract class ConsumerUser extends User {
 		return anySong;
 	}
 
-	/**
-	 * 
-	 * @param Song
+	/**Deploys the String representation of purchase song
+	 * @return purchase resume
 	 */
-
-
 	public String deployPurchases(){
 		String msj = "Tus canciones: \n";
 		int counter = 0;
@@ -78,16 +77,11 @@ public abstract class ConsumerUser extends User {
 		}
 		return msj;
 	}
-
-
-	public Date datePurchase() {
-		// TODO - implement ConsumerUser.datePurchase
-		throw new UnsupportedOperationException();
-	}
-
-	public String consumerResume() {
-		return calculateMostGenre() +'\n' ;
-	}
+	
+	/**Updates the times a song genre after is played
+	 * @param genre genre to update
+	 * @return true if updated, else false
+	 */
 	public boolean updateGenrePlays(Genre genre){
 		boolean isFound = false;
 		for (int i = 0; i < genrePlays.size() && !isFound; i++) {
@@ -98,6 +92,10 @@ public abstract class ConsumerUser extends User {
 		}
 		return isFound;
 	}
+	/**Updates the times a podcast category after is played
+	 * @param category category to update
+	 * @return true if updated, else false
+	 */
 	public boolean updateCategoryPlays(Category category){
 		boolean isFound = false;
 		for (int i = 0; i < categoryPlays.size() && !isFound; i++) {
@@ -109,77 +107,103 @@ public abstract class ConsumerUser extends User {
 		return isFound;
 	}
 
-	/**
-	 * 
-	 * @param Song
+	/**Calculates the most reproduced genre
+	 * @return Message with the most reproduced genre
 	 */
-	public abstract boolean addSong(Song Song);
-
 	public String calculateMostGenre(){
 		Collections.sort(genrePlays, Collections.reverseOrder());
 		return "El genero mas escuchado es: "+genrePlays.get(0).getGenre()+" Reproducciones: "+genrePlays.get(0).getTimesPlayed();
 	}
+	/**Calculate the most reproduced category
+	 * @return Message with the most reproduced category
+	 */
 	public String calculateMostCategory(){
 		Collections.sort(categoryPlays, Collections.reverseOrder());
 		return "La categoria mas escuchada es: "+categoryPlays.get(0).getCategory()+" Reproducciones: "+categoryPlays.get(0).getTimesPlayed();
 	}
 
-	public abstract String calculateMostArtist();
-
-	public abstract String calculateMostCreator();
-
-
-	public int getPlayedTime() {
-		return this.playedTime;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	public ArrayList<Playlist> getPlaylists() {
-		return playlists;
-	}
-
-	public void setPlaylists(ArrayList<Playlist> playlists) {
-		this.playlists = playlists;
-	}
-
 	/**
-	 * 
-	 * @param playedTime
-	 */
-	public void setPlayedTime(int playedTime) {
-		this.playedTime = playedTime;
-	}
-
-	public String getNickname() {
-		return this.nickname;
-	}
-
-	/**
-	 * 
-	 * @param nickname
-	 */
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
-
-	/**
-	 * 
-	 * @param playlist
+	 * adds a playlist to the list
+	 * @param playlist new playlist
+	 * @return true if added, else false
 	 */
 	public boolean addPlaylist(Playlist playlist) {
 		return playlists.add(playlist);
 	}
 
-	/**
-	 * 
-	 * @param Playlist
+	
+	/**Gets the list of purchases
+	 * @return list of purchases
 	 */
+	public ArrayList<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	/**Sets the list of purchases to a new one
+	 * @param purchases new list of purchases
+	 */
+	public void setPurchases(ArrayList<Purchase> purchases) {
+		this.purchases = purchases;
+	}
+
+
+	/**Gets the accumulated time a user has played audios
+	 * @return accumulated time
+	 */
+	public int getPlayedTime() {
+		return this.playedTime;
+	}
+
+	/**
+	 * Sets the accumlated time played to a new one
+	 * @param playedTime new time played
+	 */
+	public void setPlayedTime(int playedTime) {
+		this.playedTime = playedTime;
+	}
+
+	/**Gets the id of the user 
+	 * @return id of the user
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**Sets the id of the user to a new one
+	 * @param id new id
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+	/**Gets the list of playlists
+	 * @return list of playlists
+	 */
+	public ArrayList<Playlist> getPlaylists() {
+		return playlists;
+	}
+
+	/**Sets the lsit of playlists to a new one
+	 * @param playlists new list of playlist
+	 */
+	public void setPlaylists(ArrayList<Playlist> playlists) {
+		this.playlists = playlists;
+	}
+
+
+
+	/**Gets the nickname of the user
+	 * @return nickname of the user
+	 */
+	public String getNickname() {
+		return this.nickname;
+	}
+
+	/**
+	 * Sets the nickname of the user to a new one
+	 * @param nickname new nickname
+	 */
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
 }

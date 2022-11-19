@@ -1,16 +1,27 @@
 package ui;
 import models.PlatformController;
 import java.util.Scanner;
-
+/** Represents the User interface.
+ * @author Alejandro Cordoba
+ * @version 1.0
+ * @since 1.0
+*/
 public class Main {
 	
 	Scanner sc;
 	PlatformController control;
 
+	/**
+	 * Constructor of the Main class
+	 */
 	public Main() {
 		sc = new Scanner(System.in);
 		control = new PlatformController("NeoSound", "78964646536");
 	}
+	/**
+ 	* Our main method.
+ 	* @param args The command line arguments.
+ 	**/
 	public static void main(String[] args) {
 		Main main = new Main();
 		int option = 0;
@@ -22,6 +33,9 @@ public class Main {
 	}
 
 
+	/**Shows the menu and gets the option
+	 * @return option selected
+	 */
 	public int getOptionShowMenu(){
 		int option = 0; 
 		System.out.println("<<<<< Welcome to Store >>>>>");
@@ -39,6 +53,9 @@ public class Main {
 		return option; 
 	}
 
+	/**Excutes the selected option
+	 * @param option selected option
+	 */
 	public void executeOption(int option){
 
 		switch(option){
@@ -78,6 +95,9 @@ public class Main {
 		}
 	}
 
+	/**Validates an integere input
+	 * @return -1 if not an integer, else the integer itself
+	 */
 	public int validateIntegerInput(){
 		int option = 0; 
 
@@ -93,7 +113,10 @@ public class Main {
 
 		return option; 
 	}
-
+	
+	/**
+	 * Ask the data for register a user and sends it to the controller
+	 */
 	public void registerUser() {
 		System.out.println("¿Que tipo de usuario desea registrar?\n"+
 		"1. Consumidor \n"+
@@ -151,6 +174,9 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Ask the data for registering an audio an sends it to the controller
+	 */
 	public void registerAudio() {
 		String msj  = null;
 		String name = null;
@@ -207,7 +233,10 @@ public class Main {
 			System.out.println("Opcion invalida");
 		}
 	}
-
+	
+	/**
+	 * Asks the data for registering a playlist and sends it to the controller
+	 */
 	public void registerPlaylist() {
 		String id = null;
 		String playlistName = null;
@@ -235,6 +264,9 @@ public class Main {
 		
 	}
 
+	/**
+	 * Ask the data for editing a playlist and sends it to the controller
+	 */
 	public void editPlaylist() {
 		String id = null;
 		String which = null;
@@ -302,7 +334,10 @@ public class Main {
 		
 
 	}
-
+	
+	/**
+	 * Asks the data for sharing a playlist and sends it to the controller
+	 */
 	public void sharePlaylist() {
 		String id = null;
 		String playlistName = null;
@@ -332,7 +367,10 @@ public class Main {
 	}
 
 	
-
+	
+	/**
+	 * Asks the data for playing an audio an simulates it being played
+	 */
 	public void playAudio() {
 		String id = null;
 		Boolean isOwned = false;
@@ -533,7 +571,10 @@ public class Main {
 						
 		
 	}
-
+	
+	/**
+	 * Asks the data for buying a song and sends it to the controller
+	 */
 	public void buySong() {
 		String id  = null;
 		String songName = null;
@@ -553,6 +594,9 @@ public class Main {
 		}
 	}
 
+	/**
+	 * Asks the data for displaying users resume and displays it with all the general platform stadistics
+	 */
 	public void showPlatformResume(){
 		String id = null;
 		System.out.println("Inserte el id del usuario");

@@ -1,36 +1,33 @@
 package models;
 import java.util.Date;
-
+/** Represents a User.
+ * @author Alejandro Cordoba
+ * @version 1.0
+ * @since 1.0
+*/
 
 public abstract class User {
 
 	private Date linkDate;
 
+	/**
+	 * Constructor of the User Class
+	 */
 	public User() {
 		this.linkDate = new Date();
 	}
 
-	public String getId() {
-		// TODO - implement User.getId
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param id
+		
+	/**Gets the link date of the user
+	 * @return link date
 	 */
-	public void setId(String id) {
-		// TODO - implement User.setId
-		throw new UnsupportedOperationException();
-	}
-
 	public Date getLinkDate() {
 		return this.linkDate;
 	}
 
 	/**
-	 * 
-	 * @param linkDate
+	 * Sets the link date of the user to a new one
+	 * @param linkDate new link date
 	 */
 	public void setLinkDate(Date linkDate) {
 		this.linkDate = linkDate;
