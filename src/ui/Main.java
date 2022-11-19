@@ -210,36 +210,18 @@ public class Main {
 
 	public void registerPlaylist() {
 		String id = null;
-		String which = null;
 		String playlistName = null;
-		String audioName = null;
 		System.out.println("Inserte el identificador del usuario");
 		id = sc.nextLine();
 		if(control.deployUserOptions(id)[0]!=null){ 
 			if(control.deployUserOptions(id)[1]==null){
 				System.out.println("Inserte un nombre para la playlist");
 				playlistName = sc.nextLine();
-				if(control.searchPlaylistFromConsumer(playlistName, control.searchUser(id))==null){
-					System.out.println(control.deployUserOptions(id)[0]);
-					System.out.println("Inserte el nombre del audio que desea agregar");
-					audioName = sc.nextLine();
-					if(control.createPlaylist(playlistName, id, audioName)){
+				if(control.searchPlaylistFromConsumer(playlistName, control.searchUser(id))==null){;
+					if(control.createPlaylist(playlistName, id)){
 						System.out.println("Se creo la playlist");
-						do{
-							System.out.println("¿Deseas agregar otro audio? \n"+
-							"1. Si \n"+
-							"2. No");
-							which = sc.nextLine().trim();
-							if(which.equals("1")){
-								System.out.println(control.deployUserOptions(id)[0]);
-								System.out.println("Inserte el nombre del audio que desea agregar");
-								audioName = sc.nextLine();
-								System.out.println(control.editPlaylist(playlistName, audioName, 1, id));
-							}
-						}while (which.equals("1"));
-						System.out.println("Playlist Concluida");
 					}else{
-						System.out.println("No se encontro el audio");
+						System.out.println("No se creo la playlist");
 					}
 				}else{
 					System.out.println("Ya tienes una playlist creada con ese nombre");

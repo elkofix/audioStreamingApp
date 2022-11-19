@@ -2,7 +2,6 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
 
 
 public class PlatformController{
@@ -14,19 +13,19 @@ public class PlatformController{
 
 
 	/**
-	 * 
-	 * @param name
-	 * @param nit
+	 * Constructor of the platform controller
+	 * @param name name of the platform
+	 * @param nit enterprise nit
 	 */
 	public PlatformController(String name, String nit) {
 		
 		this.name = name;
 		this.nit = nit;
 		users = new ArrayList<User>();
+		audios = new ArrayList<Audio>();
 		users.add(new Premium("1", "k"));
 		users.add(new ContentCreator("a", "a"));
 		users.add(new Artist("b", "a"));
-		audios = new ArrayList<Audio>();
 		addAudio(createAudio("Wanna be yours", "xd", 150, null, 100.0, null, 1, 1, "b") , "b");
 		addAudio(createAudio("Wisdom", "xd", 200, null, 200.0, null, 1, 1,"b" ), "b");
 		addAudio(createAudio("Vibras", "xd", 100, null, 100.0, null, 1, 1,"b"), "b");
@@ -39,6 +38,11 @@ public class PlatformController{
 		addAudio(createAudio("Con nombre de podcasst", "xd", 401, null, 90.0, null, 1, 2,"a"), "a");	
 		
 	}
+	/**Updates and audio in Producer and Platform list when it's played
+	 * @param anyAudio audio to be updated
+	 * @param playTime the seconds the audio was played
+	 * @return true if is updated, else false
+	 */
 	public boolean updateAudio(Audio anyAudio, int playTime){
 		audios.remove(anyAudio);
 		ProducerUser anyUser = ((ProducerUser)(searchUser(anyAudio.getAuthor())));
@@ -58,8 +62,9 @@ public class PlatformController{
 		return audios.add(anyAudio);
 	}
 	/**
-	 * 
-	 * @param User
+	 * Adds a user to Platform's list
+	 * @param User user object to be added
+	 * @return Confirmation message if added, else error message
 	 */
 	public String addUser(User user) {
 		String id = giveUserId(user);
@@ -76,6 +81,15 @@ public class PlatformController{
 		return msj;
 	}
 
+	/** Creates a user depending on the type 
+	 * @param id id for the user
+	 * @param nickname nickname if the user is consumer
+	 * @param name name if the user is producer
+	 * @param imgURL Url of the image that represents them if producer
+	 * @param typeUser1 type of user, 1 being consumer, 2 being Producer
+	 * @param typeUser2 subtype of user, 1 being Artist for producer or Standard for Consumer, 2 being Content creator for producer or Premium for Consumer
+	 * @return User created
+	 */
 	public User createUser(String id, String nickname, String name, String imgURL, int typeUser1, int typeUser2){
 		User anyUser = null;
 		if(typeUser1 == 1){
@@ -96,6 +110,18 @@ public class PlatformController{
 		return anyUser;
 	}
 
+	/**Creates and audio depending on the type
+	 * @param name name of the audio
+	 * @param imgURL url that represents the audio
+	 * @param duration duration in seconds of the audio
+	 * @param album name of the album if song
+	 * @param price price of the audio if song
+	 * @param description description of the audio if podcast
+	 * @param genre option selected for genre if song or category if podcast
+	 * @param audioType audio type, 1 being song, 2 being podcast
+	 * @param author author of the audio
+	 * @return Audio created
+	 */
 	public Audio createAudio(String name, String imgURL, int duration, String album, double price, String description, int genre,int audioType, String author){
 		Audio anyAudio = null;
 		if(audioType==1){
@@ -107,8 +133,10 @@ public class PlatformController{
 	}
 
 	/**
-	 * 
-	 * @param Audio
+	 * Adds and audio to a producer user list
+	 * @param Audio Audio to be added
+	 * @param userId id of the producer user - it's mandatory to be a producer, else and exception message is thrown
+	 * @return Confirmation message
 	 */
 	public String addAudio(Audio audio, String userId) {
 		String msj = "No se agrego el audio";
@@ -130,8 +158,9 @@ public class PlatformController{
 	}
 	
 	/**
-	 * 
-	 * @param name
+	 * Search a user by its id and return the object
+	 * @param id id of the user to be search
+	 * @return Object of the user, null if isn't found
 	 */
 	public User searchUser(String id){
 		User anyUser = null;
@@ -158,16 +187,11 @@ public class PlatformController{
 			
 		return anyUser;
 	}
-	public String showUsers(){
-		String msj = "";
-		for (int i = 0; i < users.size(); i++) {
-			if(users.get(i) instanceof ConsumerUser){
-				msj+=((ConsumerUser)(users.get(i))).getId();
-			}
-			
-		}
-		return msj;
-	}
+
+	/**Deploys a message with purchased songs and available podcast from a give user 
+	 * @param id id of the user 
+	 * @return two strings, first contains the audios and second is null. First is null if user isn't found, second is an exception if the user is not consumer 
+	 */
 	public String[] deployUserOptions(String id){
 		String[] msj = new String[]{"Audios disponibles: \n \n", null};
 		User anyUser = searchUser(id);
@@ -187,9 +211,16 @@ public class PlatformController{
 		return msj;
 		
 	}
+	/**Checks if an audio is an instance of Song
+	 * @param anyAudio audio to be checked
+	 * @return true if song, else false
+	 */
 	public boolean isSong(Audio anyAudio){
 		return anyAudio instanceof Song;
 	}
+	/**Deploys sthe podcast available in the platforom
+	 * @return message with the podcast or an exception if no podcasts are found
+	 */
 	public String deployPodcast(){
 		String msj = "Podcast disponbibles: \n";
 		int counter = 0;
@@ -206,6 +237,10 @@ public class PlatformController{
 		return msj;
 	}
 
+	/**Searches an audio by its name
+	 * @param audioName name of the audio
+	 * @return audio object found or null if is not found
+	 */
 	public Audio searcAudio(String audioName){
 		Audio anyAudio = null;
 		boolean isFound = false;
@@ -218,21 +253,19 @@ public class PlatformController{
 		return anyAudio;
 	}
 
-	public boolean createPlaylist(String name, String userId, String audioName){
+	/**Creates a playlist with a audio and adds it to a given user
+	 * @param name name of the playlist
+	 * @param userId ID of the user
+	 * @param audioName name of the audio
+	 * @return true if is the audio is 
+	 */
+	public boolean createPlaylist(String name, String userId){
 		ConsumerUser anyUser = (ConsumerUser)searchUser(userId);
 		Playlist newPlaylist = new Playlist(name);
-		Audio anyAudio = searcAudio(audioName);
-		boolean isCreated = false;
-		if(anyAudio!=null){
-			int i = users.indexOf(anyUser);
-			newPlaylist.addAudio(anyAudio);
-			newPlaylist.generateCode();
-			anyUser.addPlaylist(newPlaylist);
-			users.set(i, anyUser);
-			isCreated = true;
-		}
-		
-
+		int i = users.indexOf(anyUser);
+		boolean isCreated = anyUser.addPlaylist(newPlaylist);
+		users.set(i, anyUser);
+	
 		return isCreated;
 	}
 
@@ -301,10 +334,11 @@ public class PlatformController{
 	}
 
 	/**
-	 * 
-	 * @param Playlist
-	 * @param audioName
-	 * @param action
+	 * Adds or removes and audio to a given playlist
+	 * @param Playlist Playlist to be edited
+	 * @param audioName audio to be added or removed
+	 * @param action action to be executed, 1 being adding the audio, 2 being remove the audio
+	 * @return a message if the action is completed or an alert for any exception
 	 */
 	public String editPlaylist(String playlistName, String audioName, int action, String UserName) {
 		String msj = "Lol";
@@ -579,23 +613,31 @@ public class PlatformController{
 				artists.add((ProducerUser)users.get(i));
 			}
 		}
-		Collections.sort(creators, Collections.reverseOrder());
-		Collections.sort(artists, Collections.reverseOrder());
+		if(creators.size()>1){
+			Collections.sort(creators, Collections.reverseOrder());
+		}
+		if(artists.size()>1){
+			Collections.sort(artists, Collections.reverseOrder());
+		}
 		String msj = "Top 5 Creadores de contenido \n\n";
 			if(creators.size()>1){
 				for (int i = 0; i <= 5 && i<creators.size(); i++) {
 					msj += i+1+":"+creators.get(i).getName()+ " Reproducciones: "+creators.get(i).getPlays() + "\n";
 				}
-			}else{
+			}else if (creators.size()==1){
 				msj += 1+":"+creators.get(0).getName()+ " Reproducciones: "+creators.get(0).getPlays() + "\n";
+			}else{
+				msj = "No hay creadores \n";
 			}
 			String msj2 = "\n Top 5 artistas \n\n";
 			if(artists.size()>1){ 
 				for (int i = 0; i <= 5 && i<creators.size(); i++) {
 					msj2 += i+1+":"+artists.get(i).getName()+ " Reproducciones: "+artists.get(i).getPlays() + "\n";
 				}
-			}else{
+			}else if(artists.size()==1){
 				msj2 += 1+":"+artists.get(0).getName()+ " Reproducciones: "+artists.get(0).getPlays() + "\n";
+			}else{
+				msj2 = "No hay artistas \n";
 			}
 		return msj+msj2;
 	}
