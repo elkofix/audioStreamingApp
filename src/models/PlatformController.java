@@ -674,7 +674,7 @@ public class PlatformController{
 			}
 			String msj2 = "\n Top 5 artistas \n\n";
 			if(artists.size()>1){ 
-				for (int i = 0; i <= 5 && i<creators.size(); i++) {
+				for (int i = 0; i <= 5 && i<artists.size(); i++) {
 					msj2 += i+1+":"+artists.get(i).getName()+ " Reproducciones: "+artists.get(i).getPlays() + "\n";
 				}
 			}else if(artists.size()==1){
