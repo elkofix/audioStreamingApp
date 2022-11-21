@@ -476,7 +476,7 @@ public class Main {
 	public void buySong() {
 		String id  = null;
 		String songName = null;
-		System.out.println("Inserte el nombre de usuario");
+		System.out.println("Inserte el identificador del usuario");
 		id = sc.nextLine();
 		if(control.deploySongs()!=null){
 			if(control.searchUser(id)!=null){
