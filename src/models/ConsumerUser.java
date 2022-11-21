@@ -121,6 +121,7 @@ public abstract class ConsumerUser extends User {
 		Collections.sort(categoryPlays, Collections.reverseOrder());
 		return "La categoria mas escuchada es: "+categoryPlays.get(0).getCategory()+" Reproducciones: "+categoryPlays.get(0).getTimesPlayed();
 	}
+	
 
 	/**
 	 * adds a playlist to the list

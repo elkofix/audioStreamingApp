@@ -27,7 +27,7 @@ public class PlatformController{
 		this.nit = nit;
 		users = new ArrayList<User>();
 		audios = new ArrayList<Audio>();
-		users.add(new Premium("1", "k"));
+		users.add(new Standard("1", "k"));
 		users.add(new ContentCreator("a", "a"));
 		users.add(new Artist("b", "a"));
 		addAudio(createAudio("Wanna be yours", "xd", 150, null, 100.0, null, 1, 1, "b") , "b");

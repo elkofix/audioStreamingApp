@@ -383,6 +383,7 @@ public class Main {
 		id = sc.nextLine();
 		if(control.deployUserOptions(id)[0]!=null){ 
 			if(control.deployUserOptions(id)[1]==null){ 
+				do{
 				System.out.println(control.deployUserOptions(id)[0]);
 				System.out.println("Inserte el nombre del audio que desea reproducir");
 				audioName = sc.nextLine();	
@@ -463,111 +464,25 @@ public class Main {
 						control.updateAudio(control.searcAudio(audioName), playedTime);
 						control.playAudio(id, control.searcAudio(audioName), playedTime);
 						System.out.println("Fin de la reproduccion");				
-						do{
-							System.out.println("Deseas reproducir otro audio? \n"+
-							"1. Si \n"+
-							"2. No");
-							which = sc.nextLine();
-							if(which.equals("1") || which.equals("2")){
-								if(which.equals("1")){ 
-									System.out.println(control.deployUserOptions(id)[0]);
-									System.out.println("Inserte el nombre del audio que desea reproducir");
-									audioName = sc.nextLine();	
-									if(control.searcAudio(audioName)!=null){
-										isPremium = control.isPremium(control.searchUser(id));
-										isSong = control.isSong((control.searcAudio(audioName)));
-										if(control.isSong(control.searcAudio(audioName))){
-											isOwned = control.searchSongFromUser(control.searcAudio(audioName), control.searchUser(id));	
-										}
-										if(!isSong || isOwned){
-											seconds = control.searcAudio(audioName).getDuration();
-											minutes = 0;
-											showSeconds = 0;
-											playAd = true;
-											option = "1";
-											isFound = false;
-											for (int i = 0; i <= seconds && !isFound; i++) {
-												if(!isPremium && !isSong && playAd){
-													System.out.println("Anuncio publicitario, en unos segundos empezara la producción \n"+
-													"Pasate a premium, y disfruta de tus audios sin interrupciones");
-													try {
-														Thread.sleep(5*1000);
-													} catch (Exception e) {
-													System.out.println(e);
-													}
-													playAd = false;
-												}
-												if(!isPremium && isSong){
-													songsPlayed++;
-												}
-												if(songsPlayed%2==0 && !isPremium && songsPlayed>1 && playAd){
-													System.out.println("Anuncio publicitario, en unos segundos empezra la producción \n"+
-													"Disfruta tus canciones sin interrupciones, Unete a premiun");
-													try {
-														Thread.sleep(5*1000);
-													} catch (Exception e) {
-														System.out.println(e);
-													}
-													playAd = false;
-												}						
-												System.out.println("Reproduciendo "+audioName);
-												if(minutes<10 && showSeconds<10){System.out.println("0"+minutes+":0"+showSeconds);}
-												if(minutes<10 && showSeconds>=10){System.out.println("0"+minutes+":"+showSeconds);}
-												if(minutes>=10 && showSeconds<10){System.out.println(""+minutes+":0"+showSeconds);}
-												if(minutes>=10 && showSeconds>=10){System.out.println(""+minutes+":"+showSeconds);}				
-												showSeconds++;
-												if(showSeconds>=60){
-													minutes++;
-													showSeconds = 0;
-												}								
-												try {
-													Thread.sleep(1*1000);
-												} catch (Exception e) {
-													System.out.println(e);
-												}
-												System.out.print("\033[H\033[2J");
-												System.out.flush();
-												if((showSeconds%15)==0){
-													if(i<seconds-1){ 
-														System.out.println("Sigues ahi?");
-														System.out.println("Presiona enter para seguir reproduciendo u otra tecla para salir del audio");
-														option = sc.nextLine();
-														if(!option.equals("")){
-															isFound = true;
-														}
-													}
-												}
-												if(i>=seconds){
-													isFound = true;
-												}
-												playedTime = i;
-											}
-										}else{
-											System.out.println("No has comprado esta cancion");
-										}
-									control.updateAudio(control.searcAudio(audioName), playedTime);
-									control.playAudio(id, control.searcAudio(audioName), playedTime);
-									System.out.println("Fin de la reproduccion");
-									}else{
-										System.out.println("No se encontro el audio");
-									}
-								}
-							}else{
-								System.out.println("Opcion invalida");
-							}
-						}while(which.equals("1"));																			
+																		
 					}else{
 						System.out.println("No has comprado esta cancion");
 					}
 				}else{
 					System.out.println("No se encontro el audio");
-				}	
+				}
+				System.out.println("Deseas reproducir otro audio? \n"+
+				"1. Si \n"+
+				"2. No");
+				which = sc.nextLine();
+		}while(!which.equals("2"));	
 			}else{
 				System.out.println(control.deployUserOptions(id)[1]);
 			}
 		}else{
 			System.out.println("No se encontro al usuario");
 		}
+		
 						
 		
 	}

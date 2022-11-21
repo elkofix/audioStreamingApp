@@ -12,7 +12,7 @@ public class Standard extends ConsumerUser {
 	 *Max number of songs a standard user can buy
 	 */
 	public static final int MAX_SONGS = 100;
-
+	public static final int MAX_PLAYLSIT = 20;
 
 	/**
 	 * Constructor of the Standard Class
@@ -35,6 +35,18 @@ public class Standard extends ConsumerUser {
 			isAdded = getPurchases().add(new Purchase(Song));
 		}
 		return isAdded;
+	}
+	@Override
+	public boolean addPlaylist(Playlist playlist) {
+		if(getPlaylists().size()<MAX_PLAYLSIT){
+			ArrayList<Playlist> play = getPlaylists();
+			play.add(playlist);
+			setPlaylists(play);
+			return true;
+		}else{
+			return false;
+		}
+		
 	}
 
 }
