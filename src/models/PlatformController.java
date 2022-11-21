@@ -565,6 +565,8 @@ public class PlatformController{
 		return "Informes de datos: \n\n"+
 		"Reproducciones de canciones: "+audioPlays[1]+"\n"+
 		"Reproducciones de Podcast: "+audioPlays[0]+"\n\n"+
+		getPlatformCategory()+"\n"+
+		getPlatformGenre()+"\n"+
 		getMaxGenre(userId)+"\n"+
 		getMaxCategory(userId)+"\n\n"+
 		getTop5ArtistnCreator()+"\n\n"+
@@ -713,6 +715,94 @@ public class PlatformController{
 		}
 		return msj+msj2;
 	}
+
+	public String getPlatformGenre(){
+        int[] genres = getGenrePlays();
+        int max = genres[0]; 
+        int maxPos = 0;
+        int min = 0;
+        for (int i = 1; i < genres.length; i++) {
+            min = genres[i];
+            if(min>max){
+                max = genres[i];
+                maxPos = i;
+            }
+        }
+
+
+        return "Tu genero mas reproducido es "+giveSongGenre(maxPos+1)+ " Reproducciones: "+max;
+    }
+
+	public String getPlatformCategory(){
+        int[] genres = getCategoryPlays();
+        int max = genres[0]; 
+        int maxPos = 0;
+        int min = 0;
+        for (int i = 1; i < genres.length; i++) {
+            min = genres[i];
+            if(min>max){
+                max = genres[i];
+                maxPos = i;
+            }
+        }
+
+
+        return "Tu categoria mas reproducida es "+givePodcastCategory(maxPos+1)+ " Reproducciones: "+max;
+    }
+
+	public int[] getGenrePlays(){
+		ArrayList<Song> songs= new ArrayList<Song>();
+		for (int i = 0; i < audios.size(); i++) {
+			if(audios.get(i) instanceof Song){
+				songs.add((Song)audios.get(i));
+			}
+		}
+        int[] genrePlays = new int[]{0, 0, 0, 0};
+        for (int i = 0; i < songs.size(); i++) {
+                        if(songs.get(i).getGenre() == Genre.ROCK){
+                        	genrePlays[0]+=songs.get(i).getTimesPlayed();
+                        }
+                        if(songs.get(i).getGenre() == Genre.POP){
+                            genrePlays[1]+=songs.get(i).getTimesPlayed();
+                        }
+                        if(songs.get(i).getGenre() == Genre.TRAP){
+                            genrePlays[2]+=songs.get(i).getTimesPlayed();
+                        }
+                        if(songs.get(i).getGenre() == Genre.HOUSE){
+                            genrePlays[3]+=songs.get(i).getTimesPlayed();
+                        }
+                }
+            
+        
+        return genrePlays;
+	}
+
+	public int[] getCategoryPlays(){
+		ArrayList<PodCast> podcast= new ArrayList<PodCast>();
+		for (int i = 0; i < audios.size(); i++) {
+			if(audios.get(i) instanceof PodCast){
+				podcast.add((PodCast)audios.get(i));
+			}
+		}
+        int[] genrePlays = new int[]{0, 0, 0, 0};
+        for (int i = 0; i < podcast.size(); i++) {
+                        if(podcast.get(i).getCategory() == Category.POLITICS){
+                        	genrePlays[0]+=podcast.get(i).getTimesPlayed();
+                        }
+                        if(podcast.get(i).getCategory() == Category.ENTERTAINMENT){
+                            genrePlays[1]+=podcast.get(i).getTimesPlayed();
+                        }
+                        if(podcast.get(i).getCategory() == Category.TREND){
+                            genrePlays[2]+=podcast.get(i).getTimesPlayed();
+                        }
+                        if(podcast.get(i).getCategory() == Category.VIDEOGAMES){
+                            genrePlays[3]+=podcast.get(i).getTimesPlayed();
+                        }
+                }
+            
+        
+        return genrePlays;
+    }
 
 	/**Calculates the sales by gender
 	 * @return Sales by gender
