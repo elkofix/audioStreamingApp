@@ -112,14 +112,14 @@ public abstract class ConsumerUser extends User {
 	 */
 	public String calculateMostGenre(){
 		Collections.sort(genrePlays, Collections.reverseOrder());
-		return "El genero mas escuchado es: "+genrePlays.get(0).getGenre()+" Reproducciones: "+genrePlays.get(0).getTimesPlayed();
+		return "El genero que mas escuchas es: "+genrePlays.get(0).getGenre()+" Reproducciones: "+genrePlays.get(0).getTimesPlayed();
 	}
 	/**Calculate the most reproduced category
 	 * @return Message with the most reproduced category
 	 */
 	public String calculateMostCategory(){
 		Collections.sort(categoryPlays, Collections.reverseOrder());
-		return "La categoria mas escuchada es: "+categoryPlays.get(0).getCategory()+" Reproducciones: "+categoryPlays.get(0).getTimesPlayed();
+		return "La categoria que mas escuchas es: "+categoryPlays.get(0).getCategory()+" Reproducciones: "+categoryPlays.get(0).getTimesPlayed();
 	}
 	
 

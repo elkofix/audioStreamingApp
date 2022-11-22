@@ -730,7 +730,7 @@ public class PlatformController{
         }
 
 
-        return "Tu genero mas reproducido es "+giveSongGenre(maxPos+1)+ " Reproducciones: "+max;
+        return "El genero mas reproducido es "+giveSongGenre(maxPos+1)+ " Reproducciones: "+max;
     }
 
 	public String getPlatformCategory(){
@@ -747,7 +747,7 @@ public class PlatformController{
         }
 
 
-        return "Tu categoria mas reproducida es "+givePodcastCategory(maxPos+1)+ " Reproducciones: "+max;
+        return "La categoria mas reproducida es "+givePodcastCategory(maxPos+1)+ " Reproducciones: "+max;
     }
 
 	public int[] getGenrePlays(){
